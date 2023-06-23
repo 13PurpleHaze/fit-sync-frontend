@@ -13,6 +13,8 @@
     width: calc(30px * 4);
     cursor: pointer;
     transition: all cubic-bezier(.25,1,.5,1) .4s;
+    position: relative;
+    z-index: 2;
 }
 
 .logo:hover {
@@ -43,17 +45,12 @@
     overflow: hidden;
 }
 
-.drop-down-menu {
-    display: none;
-}
-
 .nav__link::after {
     content: '';
     background: #fff;
     position: absolute;
     left: 0;
     bottom: -10px;
-    z-index: 1;
     width: 100%;
     height: 10px;
     transition: all cubic-bezier(.76,0,.24,1) .4s;
@@ -68,6 +65,7 @@
     position: absolute;
     bottom: -10px;
     left: 0;
+    z-index: -1;
     width: 100%;
     stroke: #cb413f;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from "./style.module.css";
 
-const PrimaryBtn = ({colorState, children, props}) => {
+const PrimaryBtn = ({colorState, children, ...props}) => {
     return (
         <>
             {

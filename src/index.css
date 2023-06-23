@@ -17,7 +17,12 @@ body {
   color: #222;
 }
 
+body.modal-open {
+  overflow: hidden;
+}
+
 a {
   text-decoration: none;
   cursor: pointer;
+  color: #222;
 }

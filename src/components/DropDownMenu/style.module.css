@@ -1,0 +1,130 @@
+.drop-down-menu-wrapper {
+    position: absolute;
+    left: 0;
+    top: -100%;
+    width: 100%;
+    height: 100vh;
+    transition: all cubic-bezier(.76,0,.24,1) .8s;
+}
+
+.drop-down-menu-wrapper.active {
+    top: 0;
+}
+
+.modal__content {
+    height: 100vh;
+    width: 100%;
+    background: #cb413f;
+}
+
+.modal__footer {
+    width: 100%;
+    height: auto;
+    transform-origin: top;
+    transition: transform 0.8s;
+    transform: scaleY(0);
+}
+
+.modal__footer.menu-open {
+    transform: scaleY(1);
+}
+
+/*nav*/
+
+.modal__content {
+    display: flex;
+    align-items: center;
+}
+
+.drop-down-menu__nav {
+    list-style: none;
+    padding-left: 200px;
+}
+
+.drop-down-menu__link {
+    font-family: 'Rubik Mono One', 'sans-serif';
+    font-size: 140px;
+    transition: all linear .2s;
+    color: #fff;
+}
+
+.drop-down-menu__link:hover {
+    color: #cab99a;
+}
+
+
+.nav__item:first-child {
+    padding-left: 100px;
+}
+
+.nav__item:nth-child(3) {
+    padding-left: 40px;
+}
+
+.nav__item {
+    position: relative;
+}
+
+.link__img {
+    position: absolute;
+}
+
+.nav__item:first-child .link__img {
+    left: 0;
+    top: 0;
+}
+.nav__item:nth-child(2) .link__img {
+    left: 800px;
+    top: 0;
+}
+.nav__item:nth-child(3) .link__img {
+    left: -10px;
+    top: 40px;
+}
+
+.submenu {
+    margin-top: 45px;
+    list-style: none;
+    display: flex;
+    gap: 40px;
+}
+
+.submenu__link {
+    font-family: 'Roboto Slab', 'serif';
+    font-weight: 300;
+    font-size: 32px;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+}
+
+.submenu__link_underline_curve {
+    position: absolute;
+    bottom: -25px;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: auto;
+    stroke: #fff;
+}
+
+.submenu__link::after {
+    content: '';
+    background: #cb413f;
+    position: absolute;
+    left: 0;
+    z-index: 2;
+    bottom: -25px;
+    width: 100%;
+    height: 25px;
+    transition: all cubic-bezier(.76,0,.24,1) .4s;
+}
+
+.list__item {
+    position: relative;
+}
+.list__item:hover .submenu__link::after {
+    transform: translateX(100%);
+}
+
+
