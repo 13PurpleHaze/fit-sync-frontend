@@ -4,11 +4,12 @@ import './index.css';
 import NavBar from "./components/NavBar";
 import reportWebVitals from './reportWebVitals';
 import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <Login/>
+    <Register/>
   </React.StrictMode>
 );
 
