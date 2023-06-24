@@ -5,6 +5,7 @@
     width: 100%;
     height: 100vh;
     transition: all cubic-bezier(.76,0,.24,1) .8s;
+    z-index: 2;
 }
 
 .drop-down-menu-wrapper.active {

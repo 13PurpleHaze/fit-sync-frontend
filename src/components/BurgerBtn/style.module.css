@@ -8,8 +8,8 @@
     transition: border linear .2s;
     position: relative;
     cursor: pointer;
-    z-index: 2;
     overflow: hidden;
+    z-index: 3;
 }
 
 .burger_color_red:hover {

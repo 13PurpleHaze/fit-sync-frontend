@@ -5,12 +5,15 @@ import NavBar from "./components/NavBar";
 import reportWebVitals from './reportWebVitals';
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Users from "./pages/Users";
+import NewUserModal from "./components/NewUserModal";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <Register/>
-  </React.StrictMode>
+    <React.StrictMode>
+        <NavBar/>
+        <Users/>
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
