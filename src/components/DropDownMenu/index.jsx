@@ -5,8 +5,9 @@ import {ReactComponent as HistoryIcon} from './history.svg';
 import {ReactComponent as StatisticIcon} from './statistic.svg';
 import {ReactComponent as UnderlineIcon} from './underline.svg';
 import {ReactComponent as FooterIcon} from './blood.svg';
+import {NavLink} from "react-router-dom";
 
-const DropDownMenu = ({menuOpen}) => {
+const DropDownMenu = ({menuOpen, setMenuOpen}) => {
     return (
         <div
             className={menuOpen ? `${classes['drop-down-menu-wrapper']} ${classes.active}` : classes['drop-down-menu-wrapper']}>
@@ -33,11 +34,11 @@ const DropDownMenu = ({menuOpen}) => {
                     <li>
                         <ul className={classes.submenu}>
                             <li className={classes.list__item}>
-                                <a href="" className={classes.submenu__link}>Пользователи</a>
-                                <UnderlineIcon className={classes.submenu__link_underline_curve}/>
+                                <NavLink to="/users" className={classes.submenu__link} onClick={() => {setMenuOpen(false)}}>Пользователи</NavLink>
+                                <UnderlineIcon className={classes.submenu__link_underline_curve} />
                             </li>
                             <li className={classes.list__item}>
-                                <a href="" className={classes.submenu__link}>Упражнения</a>
+                                <NavLink to="/exercises" className={classes.submenu__link} onClick={() => {setMenuOpen(false)}}>Упражнения</NavLink>
                                 <UnderlineIcon className={classes.submenu__link_underline_curve}/>
                             </li>
                         </ul>

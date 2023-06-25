@@ -33,7 +33,7 @@ const NavBar = () => {
                     setMenuOpen(!menuOpen)
                 }}/>
             </div>
-            <DropDownMenu menuOpen={menuOpen}/>
+            <DropDownMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen}/>
         </header>
     );
 };

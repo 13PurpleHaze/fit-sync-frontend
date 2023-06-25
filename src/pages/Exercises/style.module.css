@@ -1,4 +1,4 @@
-.users {
+.exercises {
     width: 1100px;
     margin: 50px auto;
 }
@@ -17,26 +17,34 @@
     color: #222222;
 }
 
-.list {
-    display: flex;
-    flex-direction: column;
+.exercise__icon {
+    width: 45px;
 }
 
-.user {
+.action__icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    transition: fill ease-in-out .3s;
+}
+
+
+.action__icon:hover {
+    fill: #cb413f;
+}
+
+.exercise {
     padding: 24px 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     border-bottom: 1px solid #222222;
     position: relative;
     overflow: hidden;
 }
 
-.user:first-child {
+.exercise:first-child {
     border-top: 1px solid #222;
 }
 
-.user::before {
+.exercise::before {
     content: '';
     background: #222222;
     position: absolute;
@@ -48,46 +56,31 @@
     z-index: -1;
 }
 
-.user:hover::before {
+.exercise:hover::before {
     top: 0;
 }
 
-.user:hover .user__field {
+.exercise:hover .exercise__field {
     color: #fff;
 }
 
-.user:hover .icon {
-    fill: #ffffff;
-}
-
-.user__field {
+.exercise__field {
     font-family: 'Roboto Slab', 'serif';
     font-size: 18px;
     transition: all ease-in-out .3s;
     font-weight: 300;
 }
 
-.icon {
-    width: 25px;
-    height: 25px;
-    transition: all ease-in-out .3s;
-    cursor: pointer;
+.exercise__img {
+    width: 50px;
 }
 
-.user__btn__block {
-    width: 150px;
-}
-
-.user__btn__block button {
+.exercise__img img {
     width: 100%;
 }
 
-.status {
-    width: 170px;
-    text-align: center;
-}
-.form-group {
+.list__title {
     display: flex;
-    gap: 40px;
-    align-items: flex-end;
+    align-items: center;
+    justify-content: space-between;
 }
