@@ -10,6 +10,9 @@ import NewUserModal from "./components/NewUserModal";
 import Exercises from "./pages/Exercises";
 import EditExercise from "./pages/EditExercise";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
+import History from "./pages/History/inedx";
+import Workout from "./pages/Workout";
+import Error404 from "./pages/404";
 
 const routes = [
     {
@@ -27,6 +30,21 @@ const routes = [
         path: '/users',
         element: <Users/>
     },
+    {
+        id: 3,
+        path: '/history',
+        element: <History/>
+    },
+    {
+        id: 4,
+        path: '/workout',
+        element: <Workout/>
+    },
+    {
+        id: 5,
+        path: '*',
+        element: <Error404/>
+    }
 ];
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
