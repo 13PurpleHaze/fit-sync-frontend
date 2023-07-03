@@ -1,0 +1,21 @@
+.select {
+    width: 200px;
+    padding: 12px 20px;
+    font-size: 18px;
+    font-family: 'Roboto Slab', serif;
+    outline: none;
+    background: none;
+    border: 1px solid #fff;
+    color: #fff;
+    border-radius: 20px;
+}
+
+.select:focus {
+    border: 1px solid #fff;
+}
+
+.option {
+    color: #fff;
+    background: #cb413f;
+    border: 1px solid #fff;
+}

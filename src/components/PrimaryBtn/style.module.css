@@ -1,0 +1,40 @@
+.btn {
+    padding: 10px 20px;
+    background: none;
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    font-family: 'Rubik Mono One', 'sans-serif';
+    letter-spacing: .9px;
+    color: #fff;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    transition: all cubic-bezier(.76,0,.24,1) .4s;
+}
+
+.btn:hover::before {
+    left: 0;
+}
+
+.btn::before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: -101%;
+    z-index: -1;
+    background: #cab99a;
+    border-radius: inherit;
+    transition: all cubic-bezier(.76,0,.24,1) .2s;
+}
+
+.btn_color_red {
+    background: #cb413f;
+}
+
+.btn_color_black {
+    background: #222;
+}

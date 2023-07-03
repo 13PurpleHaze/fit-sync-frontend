@@ -1,0 +1,29 @@
+.input {
+    font-weight: 300;
+    font-size: 18px;
+    font-family: 'Roboto Slab', 'serif';
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: none;
+    outline: none;
+    display: block;
+    width: 100%;
+}
+
+.input.error {
+    color: red;
+    border-bottom-color: red;
+    margin-bottom: 5px;
+}
+
+.input::placeholder {
+    color: rgba(255, 255, 255, .5);
+}
+
+.error {
+    color: red;
+    font-family: 'Roboto Slab', 'serif';
+    font-size: 16px;
+}

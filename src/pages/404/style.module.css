@@ -1,0 +1,17 @@
+.error {
+    text-align: center;
+    margin-top: 200px;
+}
+
+.error__title {
+    font-family: 'Rubik Mono One', sans-serif;
+    font-size: 90px;
+    margin-bottom: 5px;
+}
+
+.error__subtitle {
+    font-size: 18px;
+    font-family: 'Roboto Slab', serif;
+    font-weight: 300;
+    margin-bottom: 12px;
+}

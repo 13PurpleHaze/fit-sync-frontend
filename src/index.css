@@ -1,13 +1,65 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+*,
+::before,
+::after {
+    box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+    margin: 0;
+    font-family: 'Roboto Slab', serif, 'Comforter', cursive, 'Rubik Mono One', sans-serif;
+    /*font-family: 'Roboto Slab', serif;
+    font-family: 'Rubik Mono One', sans-serif;*/
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #222;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+a {
+    text-decoration: none;
+    cursor: pointer;
+    color: #222;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+.table {
+    width: 100%;
+}
+
+.table__row {
+    border-bottom: 1px solid #222;
+    box-shadow: inset 0 -1px 0 #222;
+}
+
+.table__ceil {
+    padding: 12px 8px 12px 12px;
+    text-align: left;
+    font-family: 'Roboto Slab', serif;
+    font-weight: 300;
+}
+
+.text-bold {
+    font-weight: 700;
+}
+
+.title {
+    font-family: 'Rubik Mono One', 'sans-serif';
+    font-size: 36px;
+    color: #222222;
+}
+
+.text {
+    font-size: 18px;
+    font-weight: 300;
+    font-family: 'Roboto Slab', serif;
+    color: #222;
 }
