@@ -50,3 +50,16 @@ h1, h2, h3, h4, h5, h6 {
 .text-bold {
     font-weight: 700;
 }
+
+.title {
+    font-family: 'Rubik Mono One', 'sans-serif';
+    font-size: 36px;
+    color: #222222;
+}
+
+.text {
+    font-size: 18px;
+    font-weight: 300;
+    font-family: 'Roboto Slab', serif;
+    color: #222;
+}

@@ -14,7 +14,7 @@ const DropDownMenu = ({menuOpen, setMenuOpen}) => {
             <div className={classes.modal__content}>
                 <nav className={classes['drop-down-menu__nav']}>
                     <li className={classes.nav__item}>
-                        <a href="" className={classes['drop-down-menu__link']}>Тренировка</a>
+                        <NavLink to="/workout" className={classes['drop-down-menu__link']}>Тренировка</NavLink>
                         <div className={classes.link__img}>
                             <WorkoutIcon/>
                         </div>

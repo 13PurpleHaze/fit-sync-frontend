@@ -72,3 +72,7 @@
 .list__item:hover .nav__link::after {
     transform: translateX(100%);
 }
+
+.nav__link.active::after {
+    transform: translateX(100%);
+}

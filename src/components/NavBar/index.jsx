@@ -5,6 +5,7 @@ import {ReactComponent as UnderlineIcon} from './underline.svg';
 import PrimaryBtn from "../PrimaryBtn";
 import BurgerBtn from "../BurgerBtn";
 import DropDownMenu from "../DropDownMenu";
+import {NavLink} from "react-router-dom";
 
 const NavBar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -15,11 +16,11 @@ const NavBar = () => {
                 <nav className={classes.nav}>
                     <ul className={classes.nav__list}>
                         <li className={classes.list__item}>
-                            <a href="" className={classes.nav__link}>Тренировка</a>
+                            <NavLink to="/workout" className={classes.nav__link}>Тренировка</NavLink>
                             <UnderlineIcon className={classes.nav__link_underline_curve}/>
                         </li>
                         <li className={classes.list__item}>
-                            <a href="" className={classes.nav__link}>История</a>
+                            <NavLink to="/history" className={classes.nav__link}>История</NavLink>
                             <UnderlineIcon className={classes.nav__link_underline_curve}/>
                         </li>
                         <li className={classes.list__item}>

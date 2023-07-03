@@ -1,0 +1,17 @@
+.chat-textarea {
+    font-weight: 400;
+    font-size: 18px;
+    font-family: 'Roboto Slab', 'serif';
+    color: #222;
+    padding: 12px 20px;
+    border: none;
+    border-bottom: 1px solid #222;
+    max-width: 100%;
+    min-width: 100%;
+    max-height: 75px;
+    min-height: 75px;
+    background: none;
+    outline: none;
+    display: block;
+    width: 100%;
+}
