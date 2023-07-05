@@ -12,7 +12,7 @@
     width: 100%;
 }
 
-.input.error {
+.input[aria-invalid="true"] {
     color: red;
     border-bottom-color: red;
     margin-bottom: 5px;
