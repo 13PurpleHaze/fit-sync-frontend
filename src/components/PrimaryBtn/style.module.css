@@ -38,3 +38,12 @@
 .btn_color_black {
     background: #222;
 }
+
+.btn:disabled {
+    cursor: auto;
+    opacity: .8;
+}
+
+.btn:disabled:hover::before {
+    left: -101%
+}
