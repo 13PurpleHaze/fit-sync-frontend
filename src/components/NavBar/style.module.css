@@ -73,6 +73,6 @@
     transform: translateX(100%);
 }
 
-.nav__link.active::after {
-    transform: translateX(100%);
+.nav__link.active {
+    font-weight: 700;
 }

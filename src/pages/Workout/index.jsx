@@ -1,200 +1,100 @@
-import React, {useState} from 'react';
-import classes from './style.module.css'
+import React, {useContext, useEffect, useState} from 'react';
+import {StoreContext} from "../../store";
+import {observer} from "mobx-react";
+import classes from "./style.module.css";
 import PrimaryBtn from "../../components/PrimaryBtn";
-import ExsResultInput from "../../components/ExsResultInput";
-import TextArea from "../../components/TextArea";
-import {ReactComponent as SendIcon} from './send.svg';
-import Input from "../../components/Input";
+import moment from "moment";
+import {ReactComponent as EditIcon} from "./edit.svg";
+import {ReactComponent as DeleteIcon} from "./delete.svg";
+import {ReactComponent as MoreIcon} from "./more.svg";
 import Modal from "../../components/Modal";
+import {Link} from "react-router-dom";
 
 const Workout = () => {
-    const [workout, setWorkout] = useState({
-        id: 1,
-        title: 'Новая тренировка',
-        exercises: [
-            {
-                id: 32,
-                title: 'Отжмания',
-                url: 'https://icon-library.com/images/pull-up-icon/pull-up-icon-29.jpg',
-                isStatic: false,
-                createdAt: '2009-12-12',
-                updatedAt: '2009-12-12',
-            },
-            {
-                id: 2,
-                title: 'Отжмания',
-                url: 'https://icon-library.com/images/pull-up-icon/pull-up-icon-29.jpg',
-                isStatic: false,
-                createdAt: '2009-12-12',
-                updatedAt: '2009-12-12',
-            },
-            {
-                id: 12,
-                title: 'Отжмания',
-                url: 'https://icon-library.com/images/pull-up-icon/pull-up-icon-29.jpg',
-                isStatic: false,
-                createdAt: '2009-12-12',
-                updatedAt: '2009-12-12',
-            },
-            {
-                id: 11,
-                title: 'Подтягивания в висе на одной руке',
-                url: 'https://icon-library.com/images/pull-up-icon/pull-up-icon-29.jpg',
-                isStatic: false,
-                createdAt: '2009-12-12',
-                updatedAt: '2009-12-12',
-            },
-            {
-                id: 19,
-                title: 'Отжмания',
-                url: 'https://icon-library.com/images/pull-up-icon/pull-up-icon-29.jpg',
-                isStatic: false,
-                createdAt: '2009-12-12',
-                updatedAt: '2009-12-12',
-            }
-        ],
-        createdAt: '2009-12-12',
-        updatedAt: '2009-12-12',
-    });
+    const ctx = useContext(StoreContext);
     const [showModal, setShowModal] = useState(false);
+    const [workoutId, setWorkoutId] = useState(null);
+    useEffect(() => {
+        ctx.WorkoutStore.fetch();
+        ctx.ExerciseStore.fetch();
+    }, [])
+    const toggleExercises = (id) => {
+        if (id === workoutId) {
+            setWorkoutId(null);
+        } else {
+            setWorkoutId(id);
+        }
+    }
     return (
-        <>
-            <div className={classes['workout-wrapper']}>
-                <div className={classes['workout-main']}>
-                    <div className={classes.workout}>
-                        <h3 className="title">{workout.title}</h3>
-                        <form method="post" className={classes.workout__content}>
-                            <div className={classes.exercises}>
-                                {workout.exercises.map(exs =>
-                                    <div className={classes.exercise}>
-                                        <img className={classes.exercise__img} src={exs.url} alt=""/>
-                                        <label
-                                            className={classes.exercise__text}>{exs.title} 28 {exs.isStatic ? 'с.' : 'р.'}</label>
-                                        <ExsResultInput/>
-                                    </div>
-                                )}
-                            </div>
-                            <PrimaryBtn colorState={true}>Закончить</PrimaryBtn>
-                        </form>
-                    </div>
-                    <div className={classes.players}>
-                        <h3 className="title">Команда</h3>
-                        <div className={classes.players__list}>
-                            <div className={classes.player}>
-                                <div className={classes.player__name}>Добавить нового</div>
-                                <button className={classes['plus-icon']} onClick={() => {
-                                    setShowModal(true)
-                                }}/>
-                            </div>
-                            <div className={classes.player}>
-                                <div className={classes.player__name}>Ivan</div>
-                                <div className={classes.player__results}>
-                                    <span>1</span>
-                                    <span>12</span>
-                                    <span>13</span>
-                                    <span>14</span>
-                                    <span>15</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div className={classes.start}>
-                            <PrimaryBtn colorState={true}>Начать тренировку</PrimaryBtn>
-                        </div>
-                    </div>
-                </div>
-                <div className={classes.chat}>
-                    <div className={classes.messages}>
-                        <div className={`${classes.message} ${classes.me}`}>
-                            <div className={classes['message-info']}>
-                                <div className={classes.message__name}>Linor234</div>
-                                <div className={classes.message__date}>12:22</div>
-                            </div>
-                            <div
-                                className={classes.message__text}>Привdfdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffет
-                            </div>
-                        </div>
-                        <div className={`${classes.message} ${classes.other}`}>
-                            <div className={classes['message-info']}>
-                                <div className={classes.message__name}>Linor234</div>
-                                <div className={classes.message__date}>12:22</div>
-                            </div>
-                            <div
-                                className={classes.message__text}>Привdfdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffет
-                            </div>
-                        </div>
-                        <div className={`${classes.message} ${classes.me}`}>
-                            <div className={classes['message-info']}>
-                                <div className={classes.message__name}>Linor234</div>
-                                <div className={classes.message__date}>12:22</div>
-                            </div>
-                            <div
-                                className={classes.message__text}>Привdfdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffет
-                            </div>
-                        </div>
-                        <div className={`${classes.message} ${classes.other}`}>
-                            <div className={classes['message-info']}>
-                                <div className={classes.message__name}>Linor234</div>
-                                <div className={classes.message__date}>12:22</div>
-                            </div>
-                            <div
-                                className={classes.message__text}>Привdfdfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffет
-                            </div>
-                        </div>
-                    </div>
-                    <div className={classes.chat__input}>
-                        <Input/>
-                        <SendIcon className={classes.chat__icon}/>
-                    </div>
-                </div>
+        <div className={classes.workouts}>
+            <div className={classes.header}>
+                <h3 className={classes.title}>Мои тренировки</h3>
+                <Link to="/workouts/create"><PrimaryBtn colorState={true}>Добавить тренировку</PrimaryBtn></Link>
             </div>
+            <table className="table">
+                <thead>
+                <tr className="table__row">
+                    <th className="table__ceil text-bold">Название</th>
+                    <th className="table__ceil text-bold">Дата создания</th>
+                    <th className="table__ceil text-bold">Дата обновления</th>
+                    <th className="table__ceil text-bold">Упражнения</th>
+                    <th className="table__ceil text-bold">Изменить</th>
+                    <th className="table__ceil text-bold">Удалить</th>
+                    <th className="table__ceil text-bold">Начать</th>
+                </tr>
+                </thead>
+                <tbody className={classes.workouts__body}>
+                {ctx.WorkoutStore?.workouts.map(workout =>
+                    <>
+                        <tr className="table__row">
+                            <td className="table__ceil">
+                                {workout.title}
+                            </td>
+                            <td className="table__ceil">
+                                {moment(workout.created_at).format('DD.MM.YY-HH:mm:ss')}
+                            </td>
+                            <td className="table__ceil">
+                                {moment(workout.updated_at).format('DD.MM.YY-HH:mm:ss')}
+                            </td>
+                            <td className="table__ceil"><MoreIcon
+                                className={workout.workout_id === workoutId ? `${classes.action__icon} ${classes.active}` : `${classes.action__icon}`}
+                                onClick={() => toggleExercises(workout.workout_id)}/></td>
+                            <td className="table__ceil"><EditIcon className={classes.action__icon}/></td>
+                            <td className="table__ceil"><DeleteIcon onClick={() => {ctx.WorkoutStore.delete(workout.workout_id)}} className={classes.action__icon}/></td>
+                            <td className="table__ceil"><PrimaryBtn onClick={() => {ctx.SessionStore.create(workout.workout_id)}}>Начать</PrimaryBtn></td>
+                        </tr>
+                        <tr>
+                            <td colSpan={7}>
+                                <div
+                                    className={workoutId === workout.workout_id ? `${classes.subtable} ${classes.active}` : `${classes.subtable}`}>
+                                    {workout.exercises.map(exercise =>
+                                        <div className={`table__row ${classes.exercise}`} key={exercise.exercise_id}>
+                                            <div className={classes.exercise__title}>{exercise.title}</div>
+                                            <div className="table__ceil"><img
+                                                className={classes.exercise__icon}
+                                                src={`http://localhost:8080/api/storage/${exercise.img}`} alt=""/></div>
+                                            <div className="table__ceil">
+                                                {exercise.number} {exercise.is_static ? ' с.' : ' р.'}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </td>
+                        </tr>
+
+                    </>
+                )}
+                </tbody>
+            </table>
             {
-                showModal
-                    ?
-                    <Modal setShowModal={setShowModal} title="Пригласить пользователя">
-                        <div className={classes['active-players']}>
-                            <div className={classes['active-player']}>
-                                <div className="text">Имя</div>
-                                <PrimaryBtn>Пригласить</PrimaryBtn>
-                            </div>
-                            <div className={classes['active-player']}>
-                                <div className="text">Имя</div>
-                                <PrimaryBtn>Пригласить</PrimaryBtn>
-                            </div>
-                            <div className={classes['active-player']}>
-                                <div className="text">Имя</div>
-                                <PrimaryBtn>Пригласить</PrimaryBtn>
-                            </div>
-                            <div className={classes['active-player']}>
-                                <div className="text">Имя</div>
-                                <PrimaryBtn>Пригласить</PrimaryBtn>
-                            </div>
-                            <div className={classes['active-player']}>
-                                <div className="text">Имя</div>
-                                <PrimaryBtn>Пригласить</PrimaryBtn>
-                            </div>
-                            <div className={classes['active-player']}>
-                                <div className="text">Имя</div>
-                                <PrimaryBtn>Пригласить</PrimaryBtn>
-                            </div>
-                            <div className={classes['active-player']}>
-                                <div className="text">Имя</div>
-                                <PrimaryBtn>Пригласить</PrimaryBtn>
-                            </div>
-                            <div className={classes['active-player']}>
-                                <div className="text">Имя</div>
-                                <PrimaryBtn>Пригласить</PrimaryBtn>
-                            </div>
-                            <div className={classes['active-player']}>
-                                <div className="text">Имя</div>
-                                <PrimaryBtn>Пригласить</PrimaryBtn>
-                            </div>
-                        </div>
+                showModal ?
+                    <Modal setShowModal={setShowModal} title="Добавить тренировку">
+
                     </Modal>
                     : null
             }
-        </>
-    )
-        ;
+        </div>
+    );
 };
 
-export default Workout;
+export default observer(Workout);

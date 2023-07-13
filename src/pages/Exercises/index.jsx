@@ -17,7 +17,7 @@ const Exercises = () => {
     const ctx = useContext(StoreContext);
     const [showModal, setShowModal] = useState(false);
     useEffect(() => {
-        ctx.ExerciseStore.get();
+        ctx.ExerciseStore.fetch();
     }, []);
 
     const {
@@ -29,10 +29,11 @@ const Exercises = () => {
         mode: 'onChange',
     })
     const submit = async (data) => {
+        console.log(data);
         const formData = new FormData();
         formData.append('title', data['title']);
         formData.append('is_static', data['is_static']);
-        formData.append('file', data['file']);
+        formData.append('img', data['img']);
         await ctx.ExerciseStore.add(formData);
         reset();
         setShowModal(false);
@@ -56,7 +57,8 @@ const Exercises = () => {
                     <th className="table__ceil text-bold">Изменить</th>
                     <th className="table__ceil text-bold">Удалить</th>
                 </tr>
-                {ctx.ExerciseStore?.exercises.map(exs =>
+
+                {ctx.ExerciseStore?.exercises && ctx.ExerciseStore?.exercises.map(exs =>
                     <tr key={exs.id} className="table__row">
                         <td className="table__ceil">{exs.title}</td>
                         <td className="table__ceil">{exs.is_static ? 'Статическое' : 'Динамичесское'}</td>
@@ -105,7 +107,7 @@ const Exercises = () => {
                             </div>
                             <div>
                                 <Controller
-                                    name='file'
+                                    name='img'
                                     control={control}
                                     rules={{
                                         required: 'Это поле обязательно',

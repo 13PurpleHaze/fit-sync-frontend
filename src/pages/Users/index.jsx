@@ -1,81 +1,56 @@
-import React, {useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import classes from "./style.module.css";
 import {ReactComponent as MaleIcon} from "./male.svg";
 import {ReactComponent as FemaleIcon} from "./female.svg";
+import loader from "./loader.gif";
 import PrimaryBtn from "../../components/PrimaryBtn";
-import NewUserModal from "../../components/NewUserModal";
 import Status from "../../components/Status";
 import Input from "../../components/Input";
 import GenderSelect from "../../components/GenderSelect";
 import Modal from "../../components/Modal";
+import {StoreContext} from "../../store";
+import moment from "moment";
+import {observer} from "mobx-react";
+import {Controller, useForm} from "react-hook-form";
 
 const Users = () => {
-    const [users, setUsers] = useState([
-        {
-            id: 0,
-            firstName: 'Никита',
-            lastName: 'Иванов',
-            age: 24,
-            gender: true,
-            status: false,
-            createdAt: '2009-12-12',
-            updatedAt: '2009-12-12',
-        },
-        {
-            id: 1,
-            firstName: 'Никита',
-            lastName: 'Иванов',
-            age: 24,
-            gender: true,
-            status: false,
-            createdAt: '2009-12-12',
-            updatedAt: '2009-12-12',
-        },
-        {
-            id: 2,
-            firstName: 'Никита',
-            lastName: 'Иванов',
-            age: 24,
-            gender: true,
-            status: false,
-            createdAt: '2009-12-12',
-            updatedAt: '2009-12-12',
-        },
-        {
-            id: 3,
-            firstName: 'Никита',
-            lastName: 'Иванов',
-            age: 24,
-            gender: true,
-            status: false,
-            createdAt: '2009-12-12',
-            updatedAt: '2009-12-12',
-        },
-        {
-            id: 4,
-            firstName: 'Никита',
-            lastName: 'Иванов',
-            age: 24,
-            gender: true,
-            status: false,
-            createdAt: '2009-12-12',
-            updatedAt: '2009-12-12',
-        }
-    ]);
-
+    const ctx = useContext(StoreContext);
     const [showModal, setShowModal] = useState(false);
+    useEffect(() => {
+        const fetchData = async () => {
+            await ctx.UserStore.fetch();
+        };
 
-    const changeStatus = (user) => {
-        const i = users.findIndex(u => u.id === user.id);
-        users[i].status = !users[i].status;
-        setUsers([...users]);
+        fetchData();
+    }, []);
+    const blockUser = (user_id) => {
+        ctx.UserStore.block(user_id);
+    }
+
+    const unBlockUser = (user_id) => {
+        ctx.UserStore.unblock(user_id);
     }
     const [user, setUser] = useState(null);
     const addNewUser = (e) => {
         e.preventDefault();
         setShowModal(false);
-        setUsers([...users, user]);
     }
+
+    const {
+        control,
+        reset,
+        handleSubmit,
+        formState: {isValid, isDirty}
+    } = useForm({
+        mode: "onChange",
+    })
+
+    const submit = async (data) => {
+        await ctx.UserStore.add(data);
+        reset();
+        setShowModal(false);
+    }
+
     return (
         <div className={classes.users}>
             <div className={classes.header}>
@@ -85,10 +60,9 @@ const Users = () => {
                 }}>Добавить игрока</PrimaryBtn>
             </div>
             <div className={classes.list}>
-                {users.map(user =>
-                    <div key={user.id} className={classes.user}>
-                        <div className={classes.user__field}>{user.firstName}</div>
-                        <div className={classes.user__field}>{user.lastName}</div>
+                {ctx.UserStore?.users.map(user =>
+                    <div key={user.user_id} className={classes.user}>
+                        <div className={classes.user__field}>{user.first_name} {user.sur_name}</div>
                         <div className={classes.user__field}>{user.age}</div>
                         <div className={classes.user__field}>
                             {
@@ -98,41 +72,138 @@ const Users = () => {
                         </div>
                         <div className={`${classes.user__field} ${classes.status}`}><Status isBlock={!user.status}/>
                         </div>
-                        <div className={classes.user__field}>{user.createdAt}</div>
-                        <div className={classes.user__field}>{user.updatedAt}</div>
+                        <div className={classes.user__field}>{moment(user.created_at).format('DD.MM.YY-HH:mm:ss')}</div>
+                        <div className={classes.user__field}>{moment(user.updated_at).format('DD.MM.YY-HH:mm:ss')}</div>
                         <div className={`${classes.user__field} ${classes.user__btn__block}`}>
                             {
-                                user.status ? <PrimaryBtn onClick={() => {
-                                    changeStatus(user)
-                                }}>Block</PrimaryBtn> : <PrimaryBtn onClick={() => {
-                                    changeStatus(user)
-                                }}>Unblock</PrimaryBtn>
+                                !user.status ? <PrimaryBtn onClick={() => {
+                                    unBlockUser(user.user_id)
+                                }}>Unblock</PrimaryBtn> : <PrimaryBtn onClick={() => {
+                                    blockUser(user.user_id)
+                                }}>Block</PrimaryBtn>
                             }
                         </div>
                     </div>
-                )}
+                ) || <img src={loader}/>}
             </div>
             {
                 showModal ?
                     <Modal setShowModal={setShowModal} title="Добавить пользователя">
-                        <form method="post">
+                        <form method="post" onSubmit={handleSubmit(submit)}>
                             <div>
-                                <Input placeholder="Имя" value={user?.firstName} onChange={(e) => {setUser({...user, firstName: e.target.value})}}/>
+                                <Controller
+                                    name="first_name"
+                                    control={control}
+                                    rules={{
+                                        required: 'Это поле обязательно',
+                                        validate: {
+                                            validCharacters: (value) =>
+                                                (/^[А-Яа-яA-Za-z_\s]+$/).test(value) ||
+                                                'Только символы кириллицы, латиницы и нижнее подчеркивание разрешены',
+                                        },
+                                    }}
+                                    render={({field, fieldState}) => (
+                                        <Input
+                                            {...field}
+                                            error={fieldState.error?.message}
+                                            placeholder="Имя"
+                                        />
+                                    )}
+                                />
                             </div>
                             <div>
-                                <Input placeholder="Фамилия" value={user?.surName} onChange={(e) => {setUser({...user, lastName: e.target.value})}}/>
+                                <Controller
+                                    name="sur_name"
+                                    control={control}
+                                    rules={{
+                                        required: 'Это поле обязательно',
+                                        validate: {
+                                            validCharacters: (value) =>
+                                                (/^[А-Яа-яA-Za-z_\s]+$/).test(value) ||
+                                                'Только символы кириллицы, латиницы и нижнее подчеркивание разрешены',
+                                        },
+                                    }}
+                                    render={({field, fieldState}) => (
+                                        <Input
+                                            {...field}
+                                            error={fieldState.error?.message}
+                                            placeholder="Фамилия"
+                                        />
+                                    )}
+                                />
                             </div>
                             <div className={classes['form-group']}>
-                                <Input placeholder="Возраст" value={user?.age} onChange={(e) => {setUser({...user, age: e.target.value})}}/>
-                                <GenderSelect value={user?.gender} onChange={(e) => {setUser({...user, gender: e.target.value})}}/>
+                                <Controller
+                                    name="age"
+                                    control={control}
+                                    rules={{
+                                        required: 'Это поле обязательно',
+                                        validate: {
+                                            validCharacters: (value) =>
+                                                (/^[0-9]+$/).test(value) ||
+                                                'Только целые числа разрешены',
+                                        },
+                                    }}
+                                    render={({field, fieldState}) => (
+                                        <Input
+                                            {...field}
+                                            error={fieldState.error?.message}
+                                            placeholder="Возраст"
+                                        />
+                                    )}/>
+                                <Controller
+                                    name="gender"
+                                    control={control}
+                                    rules={{
+                                        required: 'Это поле обязательно',
+                                    }}
+                                    render={({field, fieldState}) => (
+                                        <GenderSelect
+                                            {...field}
+                                            error={fieldState.error?.message}
+                                        />
+                                    )}
+                                />
                             </div>
                             <div>
-                                <Input placeholder="Логин" value={user?.login} onChange={(e) => {setUser({...user, login: e.target.value})}}/>
+                                <Controller
+                                    name="login"
+                                    control={control}
+                                    rules={{
+                                        required: 'Это поле обязательно',
+                                        validate: {
+                                            validCharacters: (value) =>
+                                                (/^[А-Яа-яA-Za-z_0-9\s]+$/).test(value) ||
+                                                'Только символы кириллицы, латиницы, цифры и нижнее подчеркивание разрешены',
+                                        },
+                                    }}
+                                    render={({field, fieldState}) => (
+                                        <Input
+                                            {...field}
+                                            error={fieldState.error?.message}
+                                            placeholder="Логин"
+                                        />
+                                    )}
+                                />
                             </div>
                             <div>
-                                <Input placeholder="Пароль" value={user?.password} onChange={(e) => {setUser({...user, password: e.target.value})}}/>
+                                <Controller
+                                    name="password"
+                                    control={control}
+                                    rules={{
+                                        required: 'Это поле обязательно',
+                                    }}
+                                    render={({field, fieldState}) => (
+                                        <Input
+                                            placeholder="Пароль"
+                                            type="password"
+                                            {...field}
+                                            error={fieldState.error?.message}
+                                        />
+                                    )}
+                                />
                             </div>
-                            <PrimaryBtn onClick={(e) => {addNewUser(e)}}>Добавить</PrimaryBtn>
+                            <PrimaryBtn disabled={!isValid || !isDirty}>Добавить</PrimaryBtn>
                         </form>
                     </Modal>
                     : null
@@ -141,4 +212,4 @@ const Users = () => {
     );
 };
 
-export default Users;
+export default observer(Users);

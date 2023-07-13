@@ -7,11 +7,9 @@ import {StoreContext, Store} from "./store";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <React.StrictMode>
-        <StoreContext.Provider value={new Store()}>
-            <App/>
-        </StoreContext.Provider>
-    </React.StrictMode>
+    <StoreContext.Provider value={new Store()}>
+        <App/>
+    </StoreContext.Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function

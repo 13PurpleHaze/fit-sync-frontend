@@ -1,40 +1,43 @@
 import {action, makeObservable, observable} from "mobx";
-import api from "../utils/api";
 
 
 class ExerciseStore {
     exercises = [];
+    api;
 
-    constructor() {
+    constructor(api) {
+        this.api = api;
         makeObservable(this,
             {
                 exercises: observable,
-                get: action,
+                fetch: action,
                 add: action,
                 update: action,
                 delete: action,
             })
     }
-    get = async () => {
-        this.exercises = await (await api.get('/exercises')).data;
+    fetch = async () => {
+        const response =  (await this.api.get('/exercises')).data;
+        this.exercises = response;
+        console.log(response);
     }
 
     find = async (id) => {
-        return await api.get(`/exercises/${id}`);
+        return await this.api.get(`/exercises/${id}`);
     }
 
     add = async (exercise) => {
-        await api.post('/exercises', exercise);
+        await this.api.post('/exercises', exercise);
         await this.get();
     }
 
     update = async (exercise_id, exercise) => {
-        await api.patch(`/exercises/${exercise_id}`, exercise);
+        await this.api.patch(`/exercises/${exercise_id}`, exercise);
         await  this.get();
     }
 
     delete = async (exercise_id) => {
-        await api.delete(`/exercises/${exercise_id}`);
+        await this.api.delete(`/exercises/${exercise_id}`);
         await this.get();
     }
 }
