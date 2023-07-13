@@ -1,0 +1,26 @@
+.create-workout {
+    background: #cb413f;
+    padding: 32px 20px;
+    width: 800px;
+    border-radius: 20px;
+    margin: 150px auto;
+}
+
+.create-workout__info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.create-workout__title {
+    font-size: 36px;
+    font-family: 'Rubik Mono One', 'sans-serif';
+    color: #fff;
+}
+
+.create-workout__form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}

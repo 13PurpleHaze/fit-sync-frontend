@@ -67,6 +67,16 @@
     font-weight: 300;
 }
 
+.user__field:first-child {
+    max-width: 150px;
+    width: 150px;
+}
+
+.user__field:nth-child(2) {
+    max-width: 30px;
+    width: 30px;
+}
+
 .icon {
     width: 25px;
     height: 25px;
