@@ -3,21 +3,14 @@
     margin: 50px auto;
 }
 
-.header {
+.users__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
+    margin-bottom: 24px;
 }
 
-.title {
-    margin: 0;
-    font-family: 'Rubik Mono One', 'sans-serif';
-    font-size: 36px;
-    color: #222222;
-}
-
-.list {
+.users__list {
     display: flex;
     flex-direction: column;
 }
@@ -70,6 +63,7 @@
 .user__field:first-child {
     max-width: 150px;
     width: 150px;
+    word-wrap: anywhere;
 }
 
 .user__field:nth-child(2) {
@@ -96,8 +90,59 @@
     width: 170px;
     text-align: center;
 }
+
 .form-group {
     display: flex;
     gap: 40px;
     align-items: flex-end;
+}
+
+@media (max-width: 1180px) {
+    .users {
+        width: 800px;
+    }
+
+    .user__field:first-child {
+        width: 100px;
+    }
+}
+
+
+@media (max-width: 850px) {
+    .users {
+        width: 100%;
+        padding: 12px 20px;
+    }
+
+    .users__header {
+        margin-bottom: 12px;
+    }
+
+    .users__header {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+
+    .users__list-wrapper {
+        width: 100%;
+        overflow: auto;
+    }
+
+    .users__list {
+        width: 750px;
+    }
+}
+
+@media (max-width: 540px) {
+    .form-group {
+        gap: 20px;
+    }
+}
+
+
+@media (max-width: 440px) {
+    .form-group {
+        flex-direction: column;
+    }
 }

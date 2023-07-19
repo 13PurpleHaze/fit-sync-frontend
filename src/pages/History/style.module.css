@@ -1,28 +1,13 @@
-.workouts {
+.history {
     width: 1100px;
     margin: 50px auto;
 }
 
-.workouts__header {
+.history__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
-}
-
-.workouts__body {
-    position: relative;
-}
-
-.action__icon {
-    width: 25px;
-    height: 25px;
-    cursor: pointer;
-    transition: fill ease-in-out .3s;
-}
-
-.action__icon:hover {
-    fill: #cb413f;
 }
 
 .subtable {
@@ -54,6 +39,12 @@
     max-height: 100%;
 }
 
+.exercise__title {
+    max-width: 200px;
+    width: 100%;
+}
+
+
 .action__icon {
     transform: rotate(0);
     transition: all ease-in-out .3s;
@@ -64,30 +55,33 @@
     transform: rotate(180deg);
 }
 
-.exercise__title {
-    max-width: 200px;
-    width: 100%;
+.action__icon {
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+    transition: fill ease-in-out .3s;
 }
 
-.exercise-label {
-    margin-bottom: 12px;
+.action__icon:hover {
+    fill: #cb413f;
 }
+
 
 @media (max-width: 1180px) {
-    .workouts {
+    .history {
         width: 800px;
     }
 }
 
 @media (max-width: 850px) {
-    .workouts__header {
+    .history__header {
         flex-direction: column;
         align-items: flex-start;
         gap: 12px;
         margin-bottom: 12px;
     }
 
-    .workouts {
+    .history {
         width: 100%;
         padding: 12px 20px;
     }

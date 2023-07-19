@@ -1,12 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
-import classes from "./style.module.css";
 import {StoreContext} from "../../store";
 import {useNavigate} from "react-router-dom";
 import {Controller, useForm} from "react-hook-form";
 import Input from "../../components/Input";
 import PrimaryBtn from "../../components/PrimaryBtn";
 
-const SecondStep = () => {
+const CreateSecondStep = () => {
     const ctx = useContext(StoreContext);
     const navigate = useNavigate();
     const [exercises, setExercises] = useState([]);
@@ -47,11 +46,11 @@ const SecondStep = () => {
     }
 
     return (
-        <div className={classes['create-workout']}>
-            <div className={classes["create-workout__info"]}>
-                <h3 className={classes['create-workout__title']}>Создать тренировку</h3>
+        <div className="card">
+            <div className="card__header">
+                <h3 className="title text-white">Создать тренировку</h3>
             </div>
-            <form method="post" onSubmit={handleSubmit(submit)} className={classes['create-workout__form']}>
+            <form method="post" onSubmit={handleSubmit(submit)} className="card__content">
                 {exercises.length && exercises.map(exercise =>
                     <div>
                         <label className="text text-white">{exercise.title}</label>
@@ -74,4 +73,4 @@ const SecondStep = () => {
     );
 };
 
-export default SecondStep;
+export default CreateSecondStep;

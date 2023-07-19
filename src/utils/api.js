@@ -1,9 +1,8 @@
 import axios from "axios";
 
-
-const initApi = (AuthStore) => {
+const initApi = (AuthStore, ErrorStore) => {
     const api = axios.create({
-        baseURL: 'http://localhost:8080/api',
+        baseURL: `${process.env.REACT_APP_SERVER_URL}/api`,
         withCredentials: true,
     });
 
@@ -18,15 +17,16 @@ const initApi = (AuthStore) => {
             originalRequest._isRetery = true;
             try {
                 await AuthStore.refresh();
-                //const response = await api.post('http://localhost:8080/api/auth/refresh');
-                //const accessToken = response.data.accessToken;
-                //AuthStore.setAccessToken(accessToken)
                 return await api.request(originalRequest);
             } catch (err) {
                 AuthStore.setAccessToken('');
             }
         }
-        return Promise.reject(error);
+        if(error?.response?.status === 401) {
+            AuthStore.setAccessToken('');
+        } else {
+            ErrorStore.setError(error)
+        }
     });
 
     return api;

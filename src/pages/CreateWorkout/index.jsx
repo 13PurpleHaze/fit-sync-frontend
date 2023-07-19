@@ -1,5 +1,4 @@
 import React, {useContext, useEffect} from 'react';
-import classes from './style.module.css';
 import {Controller, useForm} from "react-hook-form";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
@@ -32,11 +31,11 @@ const CreateWorkout = () => {
     }
 
     return (
-        <div className={classes['create-workout']}>
-            <div className={classes["create-workout__info"]}>
-                <h3 className={classes['create-workout__title']}>Создать тренировку</h3>
+        <div className="card">
+            <div className="card__header">
+                <h3 className="title text-white">Создать тренировку</h3>
             </div>
-            <form method="post" onSubmit={handleSubmit(submit)} className={classes['create-workout__form']}>
+            <form method="post" onSubmit={handleSubmit(submit)} className="card__content">
                 <div>
                     <Controller
                         name="title"

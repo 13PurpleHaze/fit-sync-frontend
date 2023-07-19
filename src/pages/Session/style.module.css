@@ -2,13 +2,13 @@
     width: 100%;
     display: flex;
     justify-content: space-evenly;
-    align-items: flex-start;
 }
 
 .workout-main {
     display: flex;
     align-items: flex-start;
     gap: 40px;
+    margin-bottom: 100px;
 }
 
 .workout {
@@ -37,6 +37,7 @@
 }
 
 .exercise__text {
+    width: 190px;
     font-weight: 300;
     font-size: 18px;
     word-wrap: anywhere;
@@ -57,7 +58,6 @@
 
 .player {
     padding: 12px;
-    height: 70px;
     border-bottom: 1px solid #222;
     display: flex;
     align-items: center;
@@ -68,6 +68,8 @@
     font-weight: 300;
     font-size: 18px;
     font-family: 'Roboto Slab', 'serif';
+    width: 200px;
+    word-wrap: anywhere;
 }
 
 .player__results {
@@ -131,6 +133,7 @@
     padding: 12px;
     background: #cb413f;
     border-radius: 20px;
+    z-index: 1;
 }
 
 .chat__header {
@@ -185,6 +188,7 @@
     gap: 12px;
     overflow: auto;
     max-height: 400px;
+    height: 400px;
     mask-image: linear-gradient(to bottom, transparent 0, black var(--top-mask-size, 0), black calc(100% - var(--bottom-mask-size, 0)), transparent 100%);
     --bottom-mask-size: 10px !important;
     --top-mask-size: 10px !important;
@@ -233,7 +237,7 @@
 }
 
 .message__name {
-    font-weight: 300;
+    font-weight: 500;
 }
 
 .message-info {
@@ -250,7 +254,7 @@
 }
 
 .message__date {
-    font-weight: 300;
+    font-weight: 500;
 }
 
 .chat__input {
@@ -301,3 +305,78 @@
     justify-content: space-between;
     padding: 4px;
 }
+
+.modal-wrapper {
+    position: fixed;
+    z-index: 20;
+    background: rgba(0, 0, 0, .5);
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    width: 150px;
+    height: 150px;
+}
+
+.loader {
+    width: 100%;
+    height: 100%;
+}
+
+@media (max-width: 1240px) {
+    .workout-main {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 630px) {
+    .workout-main {
+        width: 100%;
+        padding: 0 12px;
+    }
+
+    .workout {
+        width: 100%;
+    }
+
+    .players {
+        width: 100%;
+    }
+
+    .chat {
+        width: 90%;
+    }
+
+    .player__name {
+        width: 100px;
+    }
+}
+
+
+@media (max-width: 440px) {
+    .player__results {
+        gap: 4px;
+        width: 300px;
+        flex-wrap: wrap;
+    }
+
+    .player__results div {
+        border: 1px solid #222;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 14px;
+    }
+
+    .exercise {
+        flex-direction: column;
+        gap: 12px;
+        align-items: flex-start;
+    }
+}
+

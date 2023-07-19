@@ -25,11 +25,46 @@
 }
 
 .logo {
-    text-align: center;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo img {
+    width: 100%;
 }
 
 .form-group {
     display: flex;
     gap: 40px;
     align-items: flex-end;
+}
+
+@media (max-width: 850px) {
+    .register form {
+        width: 500px;
+    }
+
+    .register {
+        margin-top: 24px;
+        margin-bottom: 24px;
+    }
+}
+
+@media (max-width: 540px) {
+    .form {
+        width: 90%;
+    }
+    .form-group {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 440px) {
+    .form-group {
+        flex-direction: column;
+    }
 }

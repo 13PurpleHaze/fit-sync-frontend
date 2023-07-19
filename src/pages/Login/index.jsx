@@ -6,6 +6,7 @@ import Input from "../../components/Input";
 import {Controller, useForm} from "react-hook-form";
 import {StoreContext} from "../../store";
 import {observer} from "mobx-react";
+import {Link} from "react-router-dom";
 
 const Login = () => {
     const ctx = useContext(StoreContext);
@@ -24,7 +25,7 @@ const Login = () => {
             await ctx.AuthStore.login(data);
             reset();
         } catch (err) {
-            console.log(err);
+            ctx.ErrorStore.setError(err);
         }
     }
     return (
@@ -46,9 +47,10 @@ const Login = () => {
                                     'Только символы кириллицы, латиницы, цифры и нижнее подчеркивание разрешены',
                             },
                         }}
-                        render={({field, fieldState}) => (
+                        defaultValue=""
+                        render={({field: {ref, ...rest}, fieldState}) => (
                             <Input
-                                {...field}
+                                {...rest}
                                 error={fieldState.error?.message}
                                 placeholder="Логин"
                             />
@@ -62,17 +64,19 @@ const Login = () => {
                         rules={{
                             required: 'Это поле обязательно',
                         }}
-                        render={({field, fieldState}) => (
+                        defaultValue=""
+                        render={({field: {ref, ...rest}, fieldState}) => (
                             <Input
                                 placeholder="Пароль"
                                 type="password"
-                                {...field}
+                                {...rest}
                                 error={fieldState.error?.message}
                             />
                         )}
                     />
                 </div>
-                <PrimaryBtn colorState={false} disabled={!isValid || !isDirty}>Войти</PrimaryBtn>
+                <div className="text text-white text-center">Нет аккаунта? <div><Link to="/register" className="text text-white">Зарегистрироваться</Link></div></div>
+                <PrimaryBtn isRed={false} disabled={!isValid || !isDirty}>Войти</PrimaryBtn>
             </form>
         </div>
     );

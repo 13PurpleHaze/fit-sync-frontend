@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from 'react';
-import classes from "./style.module.css";
 import Input from "../../components/Input";
 import ExsTypeSelect from "../../components/ExsTypeSelect";
 import FileInput from "../../components/FileInput";
@@ -45,12 +44,14 @@ const EditExercises = () => {
     }
 
     return (
-        <div className={classes.container}>
-            <h3 className={classes.title}>Упражнение #{exercise?.exercise_id}</h3>
+        <div className="card">
+            <div className="card__header">
+                <h3 className="title text-white">Упражнение #{exercise?.exercise_id}</h3>
+            </div>
             {
                 exercise
                     ?
-                    <form method="post" className={classes.form} onSubmit={handleSubmit(submit)}>
+                    <form method="post" onSubmit={handleSubmit(submit)} className="card__content">
                         <div>
                             <Controller
                                 name="title"
@@ -85,7 +86,7 @@ const EditExercises = () => {
                         </div>
                         <div>
                             <Controller
-                                name="file"
+                                name="img"
                                 control={control}
                                 rules={{
                                     validate: {
@@ -106,7 +107,7 @@ const EditExercises = () => {
                                     <FileInput
                                         {...field}
                                         error={fieldState.error}
-                                        oldFileUrl={`http://localhost:8080/api/storage/${exercise.img}`}
+                                        oldFileUrl={exercise.img}
                                         setNewFile={field.onChange}
                                     />
                                 )}
