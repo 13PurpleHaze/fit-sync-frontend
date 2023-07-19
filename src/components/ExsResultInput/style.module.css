@@ -11,3 +11,8 @@
     display: block;
     width: 100px;
 }
+
+.esx-result-input:disabled {
+    background: rgba(0, 0, 0, .1);
+    border-color: rgba(0, 0, 0, .5);
+}

@@ -6,6 +6,7 @@ import PrimaryBtn from "../../components/PrimaryBtn";
 import GenderSelect from "../../components/GenderSelect";
 import {Controller, useForm} from "react-hook-form";
 import {StoreContext} from "../../store";
+import {Link} from "react-router-dom";
 
 const Register = () => {
     const ctx = useContext(StoreContext);
@@ -19,8 +20,12 @@ const Register = () => {
     })
 
     const submit = async (data) => {
-        await ctx.AuthStore.register(data);
-        reset();
+        try {
+            await ctx.AuthStore.register(data);
+            reset();
+        } catch (error) {
+            ctx.ErrorStore.setError(error);
+        }
     }
 
     return (
@@ -29,7 +34,7 @@ const Register = () => {
                 <div className={classes.logo}>
                     <LogoIcon/>
                 </div>
-                <h3 className={classes.title}>Регистрация</h3>
+                <h3 className="title text-white">Регистрация</h3>
                 <div>
                     <Controller
                         name="first_name"
@@ -143,8 +148,8 @@ const Register = () => {
                         )}
                     />
                 </div>
+                <div className="text text-white text-center">Уже есть аккаунт? <div><Link to="/login" className="text text-white">Войти</Link></div></div>
                 <PrimaryBtn disabled={!isValid || !isDirty}>Зарегистрироваться</PrimaryBtn>
-
             </form>
         </div>
     );

@@ -5,55 +5,61 @@ import {ReactComponent as HistoryIcon} from './history.svg';
 import {ReactComponent as StatisticIcon} from './statistic.svg';
 import {ReactComponent as UnderlineIcon} from './underline.svg';
 import {ReactComponent as FooterIcon} from './blood.svg';
-import {NavLink} from "react-router-dom";
+import {Link} from "react-router-dom";
 import {StoreContext} from "../../store";
+import PrimaryBtn from "../PrimaryBtn";
 
 const DropDownMenu = ({menuOpen, setMenuOpen}) => {
     const ctx = useContext(StoreContext);
 
     return (
-        <div
-            className={menuOpen ? `${classes['drop-down-menu-wrapper']} ${classes.active}` : classes['drop-down-menu-wrapper']}>
-            <div className={classes.modal__content}>
+        <div className={menuOpen ? `${classes['drop-down-menu-wrapper']} ${classes.active}` : classes['drop-down-menu-wrapper']}>
+            <div className={classes['drop-down-menu__content']}>
                 <nav className={classes['drop-down-menu__nav']}>
                     <li className={classes.nav__item}>
-                        <NavLink to="/workout" className={classes['drop-down-menu__link']} onClick={() => {
+                        <Link to="/workouts" className={classes['drop-down-menu__link']} onClick={() => {
                             setMenuOpen(false)
-                        }}>Тренировка</NavLink>
-                        <div className={classes.link__img}>
-                            <WorkoutIcon/>
+                        }}>Тренировка</Link>
+                        <div className={classes['link__img-container']}>
+                            <WorkoutIcon className={classes.link__img}/>
                         </div>
                     </li>
                     <li className={classes.nav__item}>
-                        <NavLink to="/history" className={classes['drop-down-menu__link']} onClick={() => {
+                        <Link to="/history" className={classes['drop-down-menu__link']} onClick={() => {
                             setMenuOpen(false)
-                        }}>История</NavLink>
-                        <div className={classes.link__img}>
-                            <HistoryIcon/>
+                        }}>История</Link>
+                        <div className={classes['link__img-container']}>
+                            <HistoryIcon className={classes.link__img}/>
                         </div>
                     </li>
                     <li className={classes.nav__item}>
-                        <NavLink to="/statistics" className={classes['drop-down-menu__link']} onClick={() => {
+                        <Link to="/statistics" className={classes['drop-down-menu__link']} onClick={() => {
                             setMenuOpen(false)
-                        }}>Статистика</NavLink>
-                        <div className={classes.link__img}>
-                            <StatisticIcon/>
+                        }}>Статистика</Link>
+                        <div className={classes['link__img-container']}>
+                            <StatisticIcon className={classes.link__img}/>
                         </div>
+                    </li>
+                    <li className={classes.nav__item}>
+                        <PrimaryBtn isRed={false} onClick={() => {
+                            ctx.AuthStore.logout();
+                            ctx.RouterStore.push("/login")
+                        }}>Выйти</PrimaryBtn>
                     </li>
                     {
                         ctx.AuthStore.isAdmin
                             ? <li>
                                 <ul className={classes.submenu}>
                                     <li className={classes.list__item}>
-                                        <NavLink to="/users" className={classes.submenu__link} onClick={() => {
+                                        <Link to="/users" className={classes.submenu__link} onClick={() => {
                                             setMenuOpen(false)
-                                        }}>Пользователи</NavLink>
+                                        }}>Пользователи</Link>
                                         <UnderlineIcon className={classes.submenu__link_underline_curve}/>
                                     </li>
                                     <li className={classes.list__item}>
-                                        <NavLink to="/exercises" className={classes.submenu__link} onClick={() => {
+                                        <Link to="/exercises" className={classes.submenu__link} onClick={() => {
                                             setMenuOpen(false)
-                                        }}>Упражнения</NavLink>
+                                        }}>Упражнения</Link>
                                         <UnderlineIcon className={classes.submenu__link_underline_curve}/>
                                     </li>
                                 </ul>
@@ -62,7 +68,7 @@ const DropDownMenu = ({menuOpen, setMenuOpen}) => {
                     }
                 </nav>
             </div>
-            <div className={!menuOpen ? classes.modal__footer : `${classes.modal__footer} ${classes['menu-open']}`}>
+            <div className={!menuOpen ? classes['drop-down-menu__footer'] : `${classes['drop-down-menu__footer']} ${classes['menu-open']}`}>
                 <FooterIcon/>
             </div>
         </div>

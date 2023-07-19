@@ -1,4 +1,4 @@
-.container {
+.gender-container {
     display: flex;
     gap: 20px;
     align-items: flex-end;
@@ -42,4 +42,10 @@
 
 .label:hover {
     background: #cab99a;
+}
+
+@media (max-width: 440px) {
+    .gender-container {
+        width: 100%;
+    }
 }

@@ -5,7 +5,7 @@ import {ReactComponent as MaleIcon} from "./male.svg";
 
 const GenderSelect = ({error, onChange}) => {
     return (
-        <div className={classes.container}>
+        <div className={classes['gender-container']}>
             <h3 className={classes.title}>Пол</h3>
             <input type="radio" className={classes.radio} id="male" value={true} name="gender" onChange={onChange}/>
             <label htmlFor="male" className={classes.label}>

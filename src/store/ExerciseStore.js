@@ -17,9 +17,12 @@ class ExerciseStore {
             })
     }
     fetch = async () => {
-        const response =  (await this.api.get('/exercises')).data;
-        this.exercises = response;
-        console.log(response);
+        try {
+            const response =  (await this.api.get('/exercises')).data;
+            this.exercises = response;
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     find = async (id) => {
@@ -28,17 +31,20 @@ class ExerciseStore {
 
     add = async (exercise) => {
         await this.api.post('/exercises', exercise);
-        await this.get();
+        await this.fetch();
     }
 
-    update = async (exercise_id, exercise) => {
-        await this.api.patch(`/exercises/${exercise_id}`, exercise);
-        await  this.get();
+    update = async (exerciseId, exercise) => {
+        await this.api.patch(`/exercises/${exerciseId}`, exercise);
     }
 
     delete = async (exercise_id) => {
-        await this.api.delete(`/exercises/${exercise_id}`);
-        await this.get();
+        try {
+            await this.api.delete(`/exercises/${exercise_id}`);
+            await this.fetch()
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 

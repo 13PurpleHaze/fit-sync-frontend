@@ -2,7 +2,6 @@ import React, {useContext, useEffect, useState} from 'react';
 import classes from "./style.module.css";
 import {ReactComponent as MaleIcon} from "./male.svg";
 import {ReactComponent as FemaleIcon} from "./female.svg";
-import loader from "./loader.gif";
 import PrimaryBtn from "../../components/PrimaryBtn";
 import Status from "../../components/Status";
 import Input from "../../components/Input";
@@ -53,39 +52,47 @@ const Users = () => {
 
     return (
         <div className={classes.users}>
-            <div className={classes.header}>
-                <h3 className={classes.title}>Пользователи</h3>
-                <PrimaryBtn colorState={true} onClick={() => {
+            <div className={classes.users__header}>
+                <h3 className="title">Пользователи</h3>
+                <PrimaryBtn isRed={true} onClick={() => {
                     setShowModal(true)
-                }}>Добавить игрока</PrimaryBtn>
+                }}>Добавить</PrimaryBtn>
             </div>
-            <div className={classes.list}>
-                {ctx.UserStore?.users.map(user =>
-                    <div key={user.user_id} className={classes.user}>
-                        <div className={classes.user__field}>{user.first_name} {user.sur_name}</div>
-                        <div className={classes.user__field}>{user.age}</div>
-                        <div className={classes.user__field}>
-                            {
-                                user.gender ? <MaleIcon className={classes.icon}/> :
-                                    <FemaleIcon className={classes.icon}/>
-                            }
-                        </div>
-                        <div className={`${classes.user__field} ${classes.status}`}><Status isBlock={!user.status}/>
-                        </div>
-                        <div className={classes.user__field}>{moment(user.created_at).format('DD.MM.YY-HH:mm:ss')}</div>
-                        <div className={classes.user__field}>{moment(user.updated_at).format('DD.MM.YY-HH:mm:ss')}</div>
-                        <div className={`${classes.user__field} ${classes.user__btn__block}`}>
-                            {
-                                !user.status ? <PrimaryBtn onClick={() => {
-                                    unBlockUser(user.user_id)
-                                }}>Unblock</PrimaryBtn> : <PrimaryBtn onClick={() => {
-                                    blockUser(user.user_id)
-                                }}>Block</PrimaryBtn>
-                            }
-                        </div>
+            {!ctx.UserStore?.users ?
+                <h3 className="subtitle text-center">Пользователей нет</h3>
+                : <div className={classes['users__list-wrapper']}>
+                    <div className={classes.users__list}>
+                        {ctx.UserStore?.users.map(user =>
+                            <div key={user.user_id} className={classes.user}>
+                                <div className={classes.user__field}>{user.first_name} {user.sur_name}</div>
+                                <div className={classes.user__field}>{user.age}</div>
+                                <div className={classes.user__field}>
+                                    {
+                                        user.gender ? <MaleIcon className="icon"/> :
+                                            <FemaleIcon className="icon"/>
+                                    }
+                                </div>
+                                <div className={`${classes.user__field} ${classes.status}`}><Status
+                                    isBlock={!user.status}/>
+                                </div>
+                                <div
+                                    className={classes.user__field}>{moment(user.created_at).format('DD.MM.YY-HH:mm:ss')}</div>
+                                <div
+                                    className={classes.user__field}>{moment(user.updated_at).format('DD.MM.YY-HH:mm:ss')}</div>
+                                <div className={`${classes.user__field} ${classes.user__btn__block}`}>
+                                    {
+                                        !user.status ? <PrimaryBtn onClick={() => {
+                                            unBlockUser(user.user_id)
+                                        }}>Unblock</PrimaryBtn> : <PrimaryBtn onClick={() => {
+                                            blockUser(user.user_id)
+                                        }}>Block</PrimaryBtn>
+                                    }
+                                </div>
+                            </div>
+                        )}
                     </div>
-                ) || <img src={loader}/>}
-            </div>
+                </div>
+            }
             {
                 showModal ?
                     <Modal setShowModal={setShowModal} title="Добавить пользователя">

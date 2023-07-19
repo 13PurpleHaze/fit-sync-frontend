@@ -12,6 +12,7 @@ import {useForm, Controller} from "react-hook-form";
 import {observer} from "mobx-react";
 import {StoreContext} from "../../store";
 import moment from "moment";
+import Pagination from "../../components/Pagination";
 
 const Exercises = () => {
     const ctx = useContext(StoreContext);
@@ -24,52 +25,66 @@ const Exercises = () => {
         control,
         handleSubmit,
         reset,
-        formState: { isValid , isDirty},
+        formState: {isValid, isDirty},
     } = useForm({
         mode: 'onChange',
     })
     const submit = async (data) => {
-        console.log(data);
         const formData = new FormData();
         formData.append('title', data['title']);
         formData.append('is_static', data['is_static']);
         formData.append('img', data['img']);
-        await ctx.ExerciseStore.add(formData);
+        console.log([...formData]);
         reset();
         setShowModal(false);
+        await ctx.ExerciseStore.add(formData);
     }
 
     return (
         <div className={classes.exercises}>
-            <div className={classes.header}>
-                <h3 className={classes.title}>Упражнения</h3>
-                <PrimaryBtn colorState={true} onClick={() => {
+            <div className={classes.exercises__header}>
+                <h3 className="title">Упражнения</h3>
+                <PrimaryBtn isRed={true} onClick={() => {
                     setShowModal(true)
-                }}>Добавить упражнение</PrimaryBtn>
+                }}>Добавить</PrimaryBtn>
             </div>
-            <table className="table">
-                <tr className="table__row">
-                    <th className="table__ceil text-bold">Название</th>
-                    <th className="table__ceil text-bold">Тип</th>
-                    <th className="table__ceil text-bold">Иконка</th>
-                    <th className="table__ceil text-bold">Дата создания</th>
-                    <th className="table__ceil text-bold">Дата обновления</th>
-                    <th className="table__ceil text-bold">Изменить</th>
-                    <th className="table__ceil text-bold">Удалить</th>
-                </tr>
-
-                {ctx.ExerciseStore?.exercises && ctx.ExerciseStore?.exercises.map(exs =>
-                    <tr key={exs.id} className="table__row">
-                        <td className="table__ceil">{exs.title}</td>
-                        <td className="table__ceil">{exs.is_static ? 'Статическое' : 'Динамичесское'}</td>
-                        <td className="table__ceil"><img src={`http://localhost:8080/api/storage/${exs.img}`} alt="" className={classes.exercise__icon}/></td>
-                        <td className="table__ceil">{moment(exs.created_at).format('DD.MM.YY-HH:mm:ss')}</td>
-                        <td className="table__ceil">{moment(exs.updated_at).format('DD.MM.YY-HH:mm:ss')}</td>
-                        <td className="table__ceil"><Link to={`/exercises/${exs.exercise_id}`}><EditIcon className={classes.action__icon} onClick={() => {}}/></Link></td>
-                        <td className="table__ceil"><DeleteIcon className={classes.action__icon} onClick={() => {ctx.ExerciseStore.delete(exs.exercise_id)}}/></td>
-                    </tr>
-                )}
-            </table>
+            {!ctx.ExerciseStore?.exercises ?
+                <h3 className="subtitle text-center">Упражнений нет</h3>
+                : <div className="table-wrapper">
+                    <table className="table">
+                        <thead>
+                        <tr className="table__row">
+                            <th className="table__ceil text-bold">Название</th>
+                            <th className="table__ceil text-bold">Тип</th>
+                            <th className="table__ceil text-bold">Иконка</th>
+                            <th className="table__ceil text-bold">Дата создания</th>
+                            <th className="table__ceil text-bold">Дата обновления</th>
+                            <th className="table__ceil text-bold">Изменить</th>
+                            <th className="table__ceil text-bold">Удалить</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {ctx.ExerciseStore?.exercises.map(exs =>
+                            <tr key={exs.exercise_id} className="table__row">
+                                <td className="table__ceil">{exs.title}</td>
+                                <td className="table__ceil">{exs.is_static ? 'Статическое' : 'Динамичесское'}</td>
+                                <td className="table__ceil"><img src={exs.img}
+                                                                 alt=""
+                                                                 className={classes.exercise__icon}/></td>
+                                <td className="table__ceil">{moment(exs.created_at).format('DD.MM.YY-HH:mm:ss')}</td>
+                                <td className="table__ceil">{moment(exs.updated_at).format('DD.MM.YY-HH:mm:ss')}</td>
+                                <td className="table__ceil"><Link to={`/exercises/${exs.exercise_id}`}><EditIcon
+                                    className="icon"/></Link></td>
+                                <td className="table__ceil"><DeleteIcon className="icon" onClick={() => {
+                                    ctx.ExerciseStore.delete(exs.exercise_id)
+                                }}/></td>
+                            </tr>
+                        )
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            }
             {
                 showModal ?
                     <Modal title="Добавить упражнение" setShowModal={setShowModal}>
@@ -86,7 +101,7 @@ const Exercises = () => {
                                                 'Только символы кириллицы, латиницы и нижнее подчеркивание разрешены',
                                         },
                                     }}
-                                    render={({ field, fieldState }) => (
+                                    render={({field, fieldState}) => (
                                         <Input
                                             {...field}
                                             error={fieldState.error?.message}

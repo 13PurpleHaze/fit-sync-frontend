@@ -3,18 +3,11 @@
     margin: 50px auto;
 }
 
-.header {
+.workouts__header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 40px;
-}
-
-.title {
-    margin: 0;
-    font-family: 'Rubik Mono One', 'sans-serif';
-    font-size: 36px;
-    color: #222222;
+    margin-bottom: 24px;
 }
 
 .workouts__body {
@@ -35,12 +28,12 @@
 .subtable {
     max-height: 0;
     overflow: hidden;
-    transition: max-height .5s;
+    transition: max-height cubic-bezier(.76,0,.24,1) .6s;
 }
 
 .subtable.active {
     max-height: 500px;
-    transition: max-height .5s;
+    transition: max-height cubic-bezier(.76,0,.24,1) .6s;
 }
 
 .exercise {
@@ -80,3 +73,22 @@
     margin-bottom: 12px;
 }
 
+@media (max-width: 1180px) {
+    .workouts {
+        width: 800px;
+    }
+}
+
+@media (max-width: 850px) {
+    .workouts__header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        margin-bottom: 12px;
+    }
+
+    .workouts {
+        width: 100%;
+        padding: 12px 20px;
+    }
+}

@@ -1,62 +1,50 @@
 import React, {useContext, useEffect, useState} from 'react';
+import classes from "../CreateWorkout/style.module.css";
 import {StoreContext} from "../../store";
-import {useNavigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import {Controller, useForm} from "react-hook-form";
 import Input from "../../components/Input";
 import PrimaryBtn from "../../components/PrimaryBtn";
+import {observer} from "mobx-react";
 
-const CreateSecondStep = () => {
+const EditSecondStep = () => {
     const ctx = useContext(StoreContext);
     const navigate = useNavigate();
-    const [exercises, setExercises] = useState([]);
 
-    useEffect(() => {
+    useEffect(()=> {
         if(!ctx.WorkoutStore?.workout?.exercises) {
             navigate("/");
         }
-        const fetch = async () => {
-            const exercises = await Promise.all(
-                ctx.WorkoutStore?.workout?.exercises.map(async exerciseId => {
-                    console.log(exerciseId);
-                    return await (await ctx.ExerciseStore.find(exerciseId)).data
-                })
-            )
-            setExercises(exercises);
-            console.log(exercises)
-        }
-        if(ctx.WorkoutStore?.workout) {
-            fetch();
-        }
-    }, []);
-
+    },[])
     const {
         handleSubmit,
         control,
         reset,
-        formState: {isValid, isDirty}
+        formState: {isValid}
     } = useForm({
         mode: "onChange",
     })
 
     const submit = async (data) => {
-        ctx.WorkoutStore.addWorkout({...ctx.WorkoutStore.workout, exercises: data});
-        await ctx.WorkoutStore.add(ctx.WorkoutStore.workout);
+        await ctx.WorkoutStore.update(ctx.WorkoutStore.workout.workout_id, {...ctx.WorkoutStore.workout, exercises: data});
         reset();
         navigate("/workout");
+        //await  ctx.WorkoutStore.addWorkout(null);
     }
 
     return (
-        <div className="card">
-            <div className="card__header">
-                <h3 className="title text-white">Создать тренировку</h3>
+        <div className={classes['create-workout']}>
+            <div className={classes["create-workout__info"]}>
+                <h3 className={classes['create-workout__title']}>Обновить тренировку</h3>
             </div>
-            <form method="post" onSubmit={handleSubmit(submit)} className="card__content">
-                {exercises.length && exercises.map(exercise =>
+            <form method="post" onSubmit={handleSubmit(submit)} className={classes['create-workout__form']}>
+                {ctx.WorkoutStore?.workout?.exercises ? ctx.WorkoutStore.workout.exercises.map((exercise, index) =>
                     <div>
                         <label className="text text-white">{exercise.title}</label>
                         <Controller
-                            name={exercise.exercise_id}
+                            name={String(exercise.exercise_id)}
                             control={control}
+                            defaultValue={exercise?.reps || 0}
                             render={({field, fieldState}) => (
                                 <Input
                                     error={fieldState.error?.message}
@@ -66,11 +54,11 @@ const CreateSecondStep = () => {
                             )}
                         />
                     </div>
-                )}
-                <PrimaryBtn colorState={false} disabled={!isValid || !isDirty}>Создать</PrimaryBtn>
+                ) : <Navigate to="/workouts"/>}
+                <PrimaryBtn isRed={false} disabled={!isValid}>Обновить</PrimaryBtn>
             </form>
         </div>
     );
 };
 
-export default CreateSecondStep;
+export default observer(EditSecondStep);
