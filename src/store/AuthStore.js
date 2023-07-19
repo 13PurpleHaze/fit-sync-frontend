@@ -3,6 +3,7 @@ import axios from "axios";
 
 class AuthStore {
     accessToken = '';
+
     constructor() {
         this.accessToken = localStorage.getItem('accessToken');
         makeObservable(this, {
@@ -29,18 +30,18 @@ class AuthStore {
     }
 
     login = async ({login, password}) => {
-        try {
-            const response = await axios.post("http://localhost:8080/api/auth/login", {login, password}, {withCredentials: true});
-            const accessToken = response.data.accessToken;
-            this.setAccessToken(accessToken);
-        } catch (err) {
-            console.log(err);
-        }
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/login`, {
+            login,
+            password
+        }, {withCredentials: true});
+        const accessToken = response.data.accessToken;
+        console.log(response)
+        this.setAccessToken(accessToken);
     }
 
     register = async (user) => {
         try {
-            const response = await axios.post("http://localhost:8080/api/auth/register", user, {withCredentials: true});
+            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/register`, user, {withCredentials: true});
             const accessToken = await response.data.accessToken;
             this.setAccessToken(accessToken);
         } catch (e) {
@@ -50,8 +51,7 @@ class AuthStore {
 
     logout = async () => {
         try {
-            console.log(this.accessToken);
-            await axios.post("http://localhost:8080/api/auth/logout", null, {
+            await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`, null, {
                 headers: {
                     Authorization: `Bearer ${this.accessToken}`,
                 },
@@ -64,16 +64,13 @@ class AuthStore {
     }
 
     refresh = async () => {
-        try {
-            const response = await axios.post('http://localhost:8080/api/auth/refresh', null, {withCredentials: true});
-            const accessToken = await response.data.accessToken;
-            this.setAccessToken(accessToken);
-        } catch (err) {
-            console.log(err);
-        }
+        console.log('someone call refresh')
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/refresh`, null, {withCredentials: true});
+        const accessToken = await response.data.accessToken;
+        this.setAccessToken(accessToken);
     }
 
-    get user () {
+    get user() {
         if (!this.accessToken) {
             return null;
         }
@@ -85,16 +82,16 @@ class AuthStore {
 
         try {
             return JSON.parse(window.atob(payload));
-        } catch(e) {
+        } catch (e) {
             return null
         }
     }
 
-    get isLoggedIn () {
+    get isLoggedIn() {
         return Boolean(this.user);
     }
 
-    get isAdmin () {
+    get isAdmin() {
         return Number(this.user?.role_id) === 2;
     }
 }
