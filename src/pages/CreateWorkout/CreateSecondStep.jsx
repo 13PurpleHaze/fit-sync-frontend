@@ -6,7 +6,7 @@ import {Controller, useForm} from "react-hook-form";
 import Input from "../../components/Input";
 import PrimaryBtn from "../../components/PrimaryBtn";
 
-const SecondStep = () => {
+const CreateSecondStep = () => {
     const ctx = useContext(StoreContext);
     const navigate = useNavigate();
     const [exercises, setExercises] = useState([]);
@@ -74,4 +74,4 @@ const SecondStep = () => {
     );
 };
 
-export default SecondStep;
+export default CreateSecondStep;
