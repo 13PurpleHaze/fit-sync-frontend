@@ -5,6 +5,7 @@ class WorkoutStore {
     workouts = [];
     workout = null;
     history = [];
+    totalCount = 0;
     AuthStore;
 
     constructor(api, AuthStore, ErrorStore) {
@@ -14,25 +15,30 @@ class WorkoutStore {
             workouts: observable,
             workout: observable,
             history: observable,
+            totalCount: observable,
             fetch: action,
             addWorkout: action,
             delete: action,
             update: action,
-            getHistory: action,
+            fetchHistory: action,
         });
     }
 
-    fetch = async () => {
+    fetch = async ({limit = 10, page = 1, sort = ['title'], filters = []}) => {
+        console.log(limit);
         const response = await this.api.get('/workouts', {
             params: {
                 filters: [{
-                    user_id: this.AuthStore.user.user_id
+                    user_id: this.AuthStore?.user.user_id
                 }],
-                sort: ['title'],
-                limit: 100
+                sort,
+                limit,
+                page,
             }
         });
-        this.workouts = response?.data;
+        console.log(response)
+        this.totalCount = response.headers['x-total-count'];
+        this.workouts = response.data;
     }
 
     find = async (workoutId) => {
@@ -53,11 +59,19 @@ class WorkoutStore {
 
     delete = async (workoutId) => {
         await this.api.delete(`/workouts/${workoutId}`);
-        await this.fetch();
+        await this.fetch({});
     }
 
-    getHistory = async () => {
-        const response = await this.api.get('/history')
+    fetchHistory = async ({limit = 10, page = 1, sort = ['title'], filters = []}) => {
+        const response = await this.api.get('/history', {
+            params: {
+                limit,
+                sort,
+                filters,
+                page
+            }
+        });
+        this.totalCount = response?.headers['x-total-count'];
         this.history = response.data;
     }
 }

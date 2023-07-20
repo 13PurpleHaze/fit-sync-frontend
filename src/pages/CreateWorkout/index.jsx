@@ -12,7 +12,7 @@ const CreateWorkout = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        ctx.ExerciseStore.fetch();
+        ctx.ExerciseStore.fetch({});
     }, [])
 
     const {

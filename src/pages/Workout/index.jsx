@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import {StoreContext} from "../../store";
 import {observer} from "mobx-react";
 import classes from "./style.module.css";
@@ -9,13 +9,18 @@ import {ReactComponent as DeleteIcon} from "./delete.svg";
 import {ReactComponent as MoreIcon} from "./more.svg";
 import Modal from "../../components/Modal";
 import {Link} from "react-router-dom";
+import Pagination from "../../components/Pagination";
 
 const Workout = () => {
     const ctx = useContext(StoreContext);
     const [workoutId, setWorkoutId] = useState(null);
-    useEffect(() => {
-        ctx.WorkoutStore.fetch();
-    }, [])
+    const [currentPage, setCurrentPage] = useState(1);
+    const limit = 10;
+
+    useMemo(() => {
+        ctx.WorkoutStore.fetch({limit, page: currentPage})
+    }, [currentPage]);
+
     const toggleExercises = (id) => {
         if (id === workoutId) {
             setWorkoutId(null);
@@ -31,7 +36,7 @@ const Workout = () => {
                 <h3 className="title">Мои тренировки</h3>
                 <Link to="/workouts/create"><PrimaryBtn isRed={true}>Добавить</PrimaryBtn></Link>
             </div>
-            {!ctx.WorkoutStore.workouts ?
+            {!ctx.WorkoutStore?.workouts.length ?
                 <h3 className="subtitle text-center">Тренировок нет</h3>
                 : <div className="table-wrapper">
                         <table className="table">
@@ -96,7 +101,9 @@ const Workout = () => {
                             )}
                             </tbody>
                         </table>
+                        <Pagination currentPage={currentPage} onPageChange={setCurrentPage} limit={limit} totalCount={ctx.WorkoutStore.totalCount} siblingCount={1}/>
                     </div>
+
             }
         </div>
     );
