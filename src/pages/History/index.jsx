@@ -1,17 +1,24 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import classes from "./style.module.css";
 import {StoreContext} from "../../store";
 import {observer} from "mobx-react";
 import {format, formatDistance} from "date-fns";
 import {ru} from "date-fns/locale";
 import { ReactComponent as MoreIcon } from './more.svg';
+import Pagination from "../../components/Pagination";
 
 const History = () => {
     const ctx = useContext(StoreContext);
     const [currHistory, setCurrHistory] = useState(null);
-    useEffect(() => {
-        ctx.WorkoutStore.getHistory();
-    }, [])
+    const [currentPage, setCurrentPage] = useState(1);
+    const limit = 10
+    useMemo(() => {
+        ctx.WorkoutStore.fetchHistory({
+            limit,
+            page: currentPage,
+        });
+        console.log(ctx.WorkoutStore?.history.length)
+    }, [currentPage])
 
     const toggleExercises = (id) => {
         if (id === currHistory) {
@@ -73,6 +80,7 @@ const History = () => {
                         }
                         </tbody>
                     </table>
+                    <Pagination siblingCount={1} totalCount={ctx.WorkoutStore.totalCount} currentPage={currentPage} onPageChange={setCurrentPage} limit={limit}/>
                 </div>
             }
         </div>

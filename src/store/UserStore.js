@@ -2,12 +2,14 @@ import {action, makeObservable, observable} from "mobx";
 
 class UserStore {
     users = [];
+    totalCount = 0;
     api;
 
     constructor(api) {
         this.api = api;
         makeObservable(this, {
             users: observable,
+            totalCount: observable,
             fetch: action,
             add: action,
             block: action,
@@ -15,13 +17,15 @@ class UserStore {
         })
     }
 
-    fetch = async () => {
+    fetch = async ({limit = 10, sort = ['login'], page = 1}) => {
         const response = await  this.api.get("/users", {
             params: {
-                limit: 100,
-                sort: ['login']
+                limit,
+                sort,
+                page
             }
         });
+        this.totalCount = response.headers['x-total-count'];
         this.users = await response.data;
     }
 

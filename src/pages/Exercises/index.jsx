@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import classes from "./style.module.css";
 import PrimaryBtn from "../../components/PrimaryBtn";
 import Modal from "../../components/Modal";
@@ -17,9 +17,12 @@ import Pagination from "../../components/Pagination";
 const Exercises = () => {
     const ctx = useContext(StoreContext);
     const [showModal, setShowModal] = useState(false);
-    useEffect(() => {
-        ctx.ExerciseStore.fetch();
-    }, []);
+    const [currentPage, setCurrentPage] = useState(1);
+    const limit = 10;
+
+    useMemo(() => {
+        ctx.ExerciseStore.fetch({limit, page: currentPage});
+    }, [currentPage]);
 
     const {
         control,
@@ -83,6 +86,7 @@ const Exercises = () => {
                         }
                         </tbody>
                     </table>
+                    <Pagination onPageChange={setCurrentPage} limit={limit} currentPage={currentPage} totalCount={ctx.ExerciseStore.totalCount} siblingCount={1}/>
                 </div>
             }
             {

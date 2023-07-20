@@ -23,7 +23,7 @@ const EditWorkout = () => {
     })
 
     useEffect(() => {
-        ctx.ExerciseStore.fetch();
+        ctx.ExerciseStore.fetch({});
         ctx.WorkoutStore.find(id);
     }, [])
 

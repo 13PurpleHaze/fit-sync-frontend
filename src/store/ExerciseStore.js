@@ -3,6 +3,7 @@ import {action, makeObservable, observable} from "mobx";
 
 class ExerciseStore {
     exercises = [];
+    totalCount = 0;
     api;
 
     constructor(api) {
@@ -16,13 +17,17 @@ class ExerciseStore {
                 delete: action,
             })
     }
-    fetch = async () => {
-        try {
-            const response =  (await this.api.get('/exercises')).data;
-            this.exercises = response;
-        } catch (err) {
-            console.log(err);
-        }
+    fetch = async ({limit = 10, page = 1, sort = ['title'], filters = []}) => {
+        const response =  await this.api.get('/exercises', {
+            params: {
+                limit,
+                page,
+                filters,
+                sort
+            }
+        });
+        this.totalCount = response.headers['x-total-count'];
+        this.exercises = response.data;
     }
 
     find = async (id) => {
@@ -31,7 +36,7 @@ class ExerciseStore {
 
     add = async (exercise) => {
         await this.api.post('/exercises', exercise);
-        await this.fetch();
+        await this.fetch({});
     }
 
     update = async (exerciseId, exercise) => {
@@ -39,12 +44,8 @@ class ExerciseStore {
     }
 
     delete = async (exercise_id) => {
-        try {
-            await this.api.delete(`/exercises/${exercise_id}`);
-            await this.fetch()
-        } catch (error) {
-            console.log(error);
-        }
+        await this.api.delete(`/exercises/${exercise_id}`);
+        await this.fetch({})
     }
 }
 

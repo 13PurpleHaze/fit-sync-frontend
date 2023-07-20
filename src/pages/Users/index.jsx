@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import classes from "./style.module.css";
 import {ReactComponent as MaleIcon} from "./male.svg";
 import {ReactComponent as FemaleIcon} from "./female.svg";
@@ -11,17 +11,20 @@ import {StoreContext} from "../../store";
 import moment from "moment";
 import {observer} from "mobx-react";
 import {Controller, useForm} from "react-hook-form";
+import Pagination from "../../components/Pagination";
 
 const Users = () => {
-    const ctx = useContext(StoreContext);
-    const [showModal, setShowModal] = useState(false);
-    useEffect(() => {
-        const fetchData = async () => {
-            await ctx.UserStore.fetch();
-        };
 
-        fetchData();
-    }, []);
+    const ctx = useContext(StoreContext);
+
+    const [currentPage, setCurrentPage] = useState(1);
+    const limit = 5;
+
+    useMemo(() => {
+        ctx.UserStore.fetch({limit, page: currentPage})
+    }, [currentPage]);
+
+    const [showModal, setShowModal] = useState(false);
     const blockUser = (user_id) => {
         ctx.UserStore.block(user_id);
     }
@@ -91,6 +94,7 @@ const Users = () => {
                             </div>
                         )}
                     </div>
+                    <Pagination totalCount={ctx.UserStore.totalCount} currentPage={currentPage} onPageChange={page => setCurrentPage(page)} limit={limit} siblingCount={1}/>
                 </div>
             }
             {
