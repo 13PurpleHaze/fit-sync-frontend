@@ -1,0 +1,27 @@
+.container {
+    width: 100%;
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.title {
+    text-align: center;
+    font-family: 'Rubik Mono One', 'sans-serif';
+    font-size: 36px;
+    color: #222;
+    margin-bottom: 24px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 500px;
+    padding: 32px 20px;
+    border-radius: 20px;
+    background: #cb413f;
+    box-shadow: 0 0 15px 5px #cb413f;
+}

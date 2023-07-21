@@ -1,0 +1,16 @@
+.block {
+    background: #cb413f;
+    color: #fff;
+    width: 150px;
+    padding: 6px 10px;
+    border-radius: 20px;
+}
+
+.active {
+    background: #3fcb70;
+    color: #fff;
+    width: 150px;
+    padding: 6px 10px;
+    border-radius: 20px;
+}
+

@@ -1,0 +1,30 @@
+.input {
+    font-weight: 300;
+    font-size: 18px;
+    font-family: 'Roboto Slab', 'serif';
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: none;
+    outline: none;
+    display: block;
+    width: 100%;
+}
+
+.input[aria-invalid="true"] {
+    color: #222;
+    border-bottom-color: #222;
+    margin-bottom: 5px;
+}
+
+.input::placeholder {
+    color: rgba(255, 255, 255, .5);
+}
+
+.error {
+    color: #222;
+    font-weight: 400;
+    font-family: 'Roboto Slab', 'serif';
+    font-size: 16px;
+}

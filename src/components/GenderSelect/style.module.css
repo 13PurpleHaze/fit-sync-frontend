@@ -1,0 +1,51 @@
+.gender-container {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    border-bottom: 1px solid #ffffff;
+    padding-bottom: 12px;
+}
+
+.title {
+    font-weight: 400;
+    margin: 0;
+    font-family: 'Roboto Slab', 'serif';
+    font-size: 18px;
+    color: rgba(255, 255, 255, .5);
+}
+
+.label {
+    border: 2px solid #fff;
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.radio {
+    display: none;
+}
+
+.radio:checked + .label {
+    background: #cab99a;
+}
+
+.icon {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.label:hover {
+    background: #cab99a;
+}
+
+@media (max-width: 440px) {
+    .gender-container {
+        width: 100%;
+    }
+}

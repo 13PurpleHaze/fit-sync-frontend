@@ -1,0 +1,18 @@
+.esx-result-input {
+    font-weight: 300;
+    font-size: 18px;
+    font-family: 'Roboto Slab', 'serif';
+    color: #222;
+    padding: 12px 20px;
+    border-radius: 20px;
+    border: 1px solid #222;
+    background: none;
+    outline: none;
+    display: block;
+    width: 100px;
+}
+
+.esx-result-input:disabled {
+    background: rgba(0, 0, 0, .1);
+    border-color: rgba(0, 0, 0, .5);
+}
