@@ -5,8 +5,9 @@ class SessionStore {
     isStarted = false;
     isFinished = false;
     messages = [];
-    timer = 0;
     api;
+    RouterStore;
+    AuthStore;
 
     constructor(api, socket, RouterStore, AuthStore) {
         this.isStarted = localStorage.getItem('isStarted') || false;
@@ -15,24 +16,24 @@ class SessionStore {
         this.socket = socket;
         this.RouterStore = RouterStore;
         this.AuthStore = AuthStore;
+
         this.socket.on('session:created', session => this.created(session));
         this.socket.on('session:done-exs', ({userId, reps, exerciseId}) => this.doneExs({userId, reps, exerciseId}));
         this.socket.on('message:sent', message => this.sent(message));
         this.socket.on('users:accepted', user => this.accepted(user));
         this.socket.on('session:finished', () => this.finished());
+
         makeObservable(this, {
             session: observable,
             messages: observable,
             isStarted: observable,
             isFinished: observable,
-            timer: observable,
             create: action,
             created: action,
             doExs: action,
             doneExs: action,
             send: action,
             sent: action,
-            fetchUsers: action,
             accepted: action,
             start: action,
             finish: action,
@@ -57,12 +58,6 @@ class SessionStore {
         localStorage.removeItem('isStarted')
         localStorage.removeItem('isFinished')
         this.RouterStore.push(`/session/${session.session_id}`);
-        //this.session.users = await this.fetchUsers(session);
-    }
-
-    fetchUsers = async (session) => {
-        const response = await this.api.get(`/session/${session.session_id}/users`);
-        return response.data;
     }
 
     doExs = (reps, exerciseId) => {
@@ -99,7 +94,6 @@ class SessionStore {
     }
 
     finished = () => {
-        console.log('finfi')
         this.RouterStore.push("/workouts");
     }
 }

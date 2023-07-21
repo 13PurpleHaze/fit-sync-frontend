@@ -1,5 +1,5 @@
-import React from 'react';
-import classes from './style.module.css';
+import React from "react";
+import classes from "./style.module.css";
 import {ReactComponent as SendIcon} from "./send.svg";
 
 const TextArea = ({onClick, children, ...props}) => {

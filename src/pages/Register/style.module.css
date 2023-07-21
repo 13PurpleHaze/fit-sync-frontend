@@ -47,11 +47,6 @@
     .register form {
         width: 500px;
     }
-
-    .register {
-        margin-top: 24px;
-        margin-bottom: 24px;
-    }
 }
 
 @media (max-width: 540px) {
@@ -61,10 +56,25 @@
     .form-group {
         gap: 20px;
     }
+    .register form {
+        overflow: auto;
+    }
 }
 
 @media (max-width: 440px) {
     .form-group {
         flex-direction: column;
+    }
+}
+
+@media (max-height: 1000px) {
+    .logo {
+        display: none;
+    }
+}
+
+@media (max-height: 630px) {
+    .register {
+        height: 100%;
     }
 }

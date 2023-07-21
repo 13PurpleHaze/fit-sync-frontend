@@ -18,20 +18,20 @@ class UserStore {
     }
 
     fetch = async ({limit = 10, sort = ['login'], page = 1}) => {
-        const response = await  this.api.get("/users", {
+        const response = await  this.api.get('/users', {
             params: {
                 limit,
                 sort,
                 page
             }
         });
-        this.totalCount = response.headers['x-total-count'];
-        this.users = await response.data;
+        this.totalCount = response?.headers['x-total-count'];
+        this.users = await response?.data;
     }
 
     add = async (user) => {
-        await this.api.post("/users", user);
-        await this.fetch();
+        await this.api.post('/users', user);
+        await this.fetch({});
     }
 
     block = async (user_id) => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import classes from "./style.module.css";
 
 const Select = ({error, value, children, multiple = false, ...props}) => {

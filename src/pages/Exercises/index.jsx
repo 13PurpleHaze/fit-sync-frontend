@@ -1,18 +1,18 @@
-import React, {useContext, useEffect, useMemo, useState} from 'react';
+import React, {useContext, useMemo, useState} from "react";
 import classes from "./style.module.css";
 import PrimaryBtn from "../../components/PrimaryBtn";
 import Modal from "../../components/Modal";
 import Input from "../../components/Input";
 import {ReactComponent as DeleteIcon} from "./delete.svg";
 import {ReactComponent as EditIcon} from "./edit.svg";
-import ExsTypeSelect from "../../components/ExsTypeSelect";
 import FileInput from "../../components/FileInput";
 import {Link} from "react-router-dom";
 import {useForm, Controller} from "react-hook-form";
 import {observer} from "mobx-react";
 import {StoreContext} from "../../store";
-import moment from "moment";
 import Pagination from "../../components/Pagination";
+import Select from "../../components/Select";
+import {format} from "date-fns";
 
 const Exercises = () => {
     const ctx = useContext(StoreContext);
@@ -37,7 +37,6 @@ const Exercises = () => {
         formData.append('title', data['title']);
         formData.append('is_static', data['is_static']);
         formData.append('img', data['img']);
-        console.log([...formData]);
         reset();
         setShowModal(false);
         await ctx.ExerciseStore.add(formData);
@@ -46,40 +45,40 @@ const Exercises = () => {
     return (
         <div className={classes.exercises}>
             <div className={classes.exercises__header}>
-                <h3 className="title">Упражнения</h3>
+                <h3 className='title'>Упражнения</h3>
                 <PrimaryBtn isRed={true} onClick={() => {
                     setShowModal(true)
                 }}>Добавить</PrimaryBtn>
             </div>
-            {!ctx.ExerciseStore?.exercises ?
-                <h3 className="subtitle text-center">Упражнений нет</h3>
-                : <div className="table-wrapper">
-                    <table className="table">
+            {!ctx.ExerciseStore?.exercises?.length ?
+                <h3 className='subtitle text-center'>Упражнений нет</h3>
+                : <div className='table-wrapper'>
+                    <table className='table'>
                         <thead>
-                        <tr className="table__row">
-                            <th className="table__ceil text-bold">Название</th>
-                            <th className="table__ceil text-bold">Тип</th>
-                            <th className="table__ceil text-bold">Иконка</th>
-                            <th className="table__ceil text-bold">Дата создания</th>
-                            <th className="table__ceil text-bold">Дата обновления</th>
-                            <th className="table__ceil text-bold">Изменить</th>
-                            <th className="table__ceil text-bold">Удалить</th>
+                        <tr className='table__row'>
+                            <th className='table__ceil text-bold'>Название</th>
+                            <th className='table__ceil text-bold'>Тип</th>
+                            <th className='table__ceil text-bold'>Иконка</th>
+                            <th className='table__ceil text-bold'>Дата создания</th>
+                            <th className='table__ceil text-bold'>Дата обновления</th>
+                            <th className='table__ceil text-bold'>Изменить</th>
+                            <th className='table__ceil text-bold'>Удалить</th>
                         </tr>
                         </thead>
                         <tbody>
-                        {ctx.ExerciseStore?.exercises.map(exs =>
-                            <tr key={exs.exercise_id} className="table__row">
-                                <td className="table__ceil">{exs.title}</td>
-                                <td className="table__ceil">{exs.is_static ? 'Статическое' : 'Динамичесское'}</td>
-                                <td className="table__ceil"><img src={exs.img}
-                                                                 alt=""
+                        {ctx.ExerciseStore.exercises.map(exercise =>
+                            <tr key={exercise.exercise_id} className='table__row'>
+                                <td className='table__ceil'>{exercise.title}</td>
+                                <td className='table__ceil'>{exercise.is_static ? 'Статическое' : 'Динамичесское'}</td>
+                                <td className='table__ceil'><img src={exercise.img}
+                                                                 alt=''
                                                                  className={classes.exercise__icon}/></td>
-                                <td className="table__ceil">{moment(exs.created_at).format('DD.MM.YY-HH:mm:ss')}</td>
-                                <td className="table__ceil">{moment(exs.updated_at).format('DD.MM.YY-HH:mm:ss')}</td>
-                                <td className="table__ceil"><Link to={`/exercises/${exs.exercise_id}`}><EditIcon
-                                    className="icon"/></Link></td>
-                                <td className="table__ceil"><DeleteIcon className="icon" onClick={() => {
-                                    ctx.ExerciseStore.delete(exs.exercise_id)
+                                <td className='table__ceil'>{format(new Date(exercise.created_at), 'dd.MM.yyyy HH:mm:ss')}</td>
+                                <td className='table__ceil'>{format(new Date(exercise.updated_at), 'dd.MM.yyyy HH:mm:ss')}</td>
+                                <td className='table__ceil'><Link to={`/exercises/${exercise.exercise_id}`}><EditIcon
+                                    className='icon'/></Link></td>
+                                <td className='table__ceil'><DeleteIcon className='icon' onClick={() => {
+                                    ctx.ExerciseStore.delete(exercise.exercise_id)
                                 }}/></td>
                             </tr>
                         )
@@ -90,26 +89,27 @@ const Exercises = () => {
                 </div>
             }
             {
-                showModal ?
-                    <Modal title="Добавить упражнение" setShowModal={setShowModal}>
-                        <form method="post" onSubmit={handleSubmit(submit)}>
+                showModal &&
+                    <Modal title='Добавить упражнение' setShowModal={setShowModal}>
+                        <form method='post' onSubmit={handleSubmit(submit)}>
                             <div>
                                 <Controller
-                                    name="title"
+                                    name='title'
                                     control={control}
+                                    defaultValue=''
                                     rules={{
                                         required: 'Это поле обязательно',
                                         validate: {
                                             validCharacters: (value) =>
-                                                (/^[А-Яа-яA-Za-z_]+$/).test(value) ||
+                                                (/^[А-Яа-яA-Za-z_\s]+$/).test(value) ||
                                                 'Только символы кириллицы, латиницы и нижнее подчеркивание разрешены',
                                         },
                                     }}
-                                    render={({field, fieldState}) => (
+                                    render={({field: {ref, ...rest}, fieldState}) => (
                                         <Input
-                                            {...field}
+                                            {...rest}
                                             error={fieldState.error?.message}
-                                            placeholder="Название"
+                                            placeholder='Название'
                                         />
                                     )}
                                 />
@@ -119,8 +119,11 @@ const Exercises = () => {
                                     name='is_static'
                                     control={control}
                                     defaultValue={true}
-                                    render={({field, fieldState}) => (
-                                        <ExsTypeSelect {...field}/>
+                                    render={({field: {ref, ...rest}, fieldState}) => (
+                                        <Select {...rest} multiple={false}>
+                                            <option value={true} className='text-black'>Статическое</option>
+                                            <option value={false} className='text-black'>Динамическое</option>
+                                        </Select>
                                     )}
                                 />
                             </div>
@@ -128,6 +131,7 @@ const Exercises = () => {
                                 <Controller
                                     name='img'
                                     control={control}
+                                    defaultValue=''
                                     rules={{
                                         required: 'Это поле обязательно',
                                         validate: {
@@ -144,19 +148,19 @@ const Exercises = () => {
                                             },
                                         },
                                     }}
-                                    render={({field, fieldState}) => (
+                                    render={({field: {ref, ...rest}, fieldState}) => (
                                         <FileInput
-                                            {...field}
+                                            {...rest}
                                             error={fieldState.error}
                                             oldFileUrl={null}
-                                            setNewFile={field.onChange}
+                                            setNewFile={rest.onChange}
                                         />
                                     )}
                                 />
                             </div>
                             <PrimaryBtn disabled={!isValid || !isDirty}>Добавить</PrimaryBtn>
                         </form>
-                    </Modal> : null
+                    </Modal>
             }
         </div>
     );

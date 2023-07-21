@@ -1,5 +1,4 @@
 import {action, makeObservable, observable} from "mobx";
-import workout from "../pages/Workout";
 
 class WorkoutStore {
     workouts = [];
@@ -36,17 +35,17 @@ class WorkoutStore {
                 page,
             }
         });
-        console.log(response)
-        this.totalCount = response.headers['x-total-count'];
-        this.workouts = response.data;
+        this.totalCount = response?.headers['x-total-count'];
+        this.workouts = response?.data;
     }
 
     find = async (workoutId) => {
-        this.workout = (await this.api.get(`/workouts/${workoutId}`)).data;
+        const response= await this.api.get(`/workouts/${workoutId}`);
+        this.workout = response.data;
     }
 
     add = async (workout) => {
-        await this.api.post("/workouts", workout);
+        await this.api.post('/workouts', workout);
     }
 
     addWorkout = (workout) => {

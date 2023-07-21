@@ -1,9 +1,8 @@
 import Exercises from "./pages/Exercises";
 import EditExercise from "./pages/EditExercise";
 import Users from "./pages/Users";
-import Error404 from "./pages/404";
-import React, {useContext, useEffect} from "react";
-import {BrowserRouter, Link, Navigate, Route, Router, Routes, useNavigate} from "react-router-dom";
+import React, {useContext} from "react";
+import {Navigate, Route, Router, Routes} from "react-router-dom";
 import NavBar from "./components/NavBar";
 import Login from "./pages/Login";
 import {StoreContext} from "./store";
@@ -21,62 +20,6 @@ import PrimaryBtn from "./components/PrimaryBtn";
 import History from "./pages/History";
 
 function App() {
-    const adminRoutes = [
-        {
-            id: 1,
-            path: "/users",
-            element: <Users/>
-        },
-        {
-            id: 2,
-            path: "/exercises",
-            element: <Exercises/>
-        },
-        {
-            id: 3,
-            path: '/exercises/:id',
-            element: <EditExercise/>
-        },
-    ];
-    const authRoutes = [
-        {
-            id: 1,
-            path: "/workouts",
-            element: <Workout/>
-        },
-        {
-            id: 12,
-            path: "/workouts/:id/edit",
-            element: <EditWorkout/>
-        },
-        {
-            id: 19,
-            path: "/workouts/create",
-            element: <CreateWorkout/>
-        },
-        {
-            id: 21,
-            path: "/workouts/create/step2",
-            element: <SecondStep/>
-        },
-        {
-            id: 33,
-            path: "*",
-            element: <Error404/>
-        },
-    ];
-    const guestRoutes = [
-        {
-            id: 1,
-            path: "/login",
-            element: <Login/>
-        },
-        {
-            id: 2,
-            path: "/register",
-            element: <Register/>
-        }
-    ];
     const ctx = useContext(StoreContext);
     const currentRoutes = ctx.AuthStore.isLoggedIn
         ? ctx.AuthStore.isAdmin
@@ -146,17 +89,22 @@ function App() {
                 {
                     id: 3,
                     path: '/workouts/create/step2',
-                    element: <SecondStep/>,
+                    element: <CreateSecondStep/>
                 },
                 {
                     id: 4,
+                    path: '/session/:id',
+                    element: ctx.SessionStore?.session ? <Session/> : <Navigate to="/workouts"/>
+                },
+                {
+                    id: 5,
                     path: "/workouts/:id/edit",
                     element: <EditWorkout/>
                 },
                 {
                     id: 6,
-                    path: '/session/:id',
-                    element: ctx.SessionStore?.session ? <Session/> : <Navigate to="/workouts"/>
+                    path: "/workouts/:id/edit/step2",
+                    element: <EditSecondStep/>
                 },
                 {
                     id: 7,
@@ -201,7 +149,7 @@ function App() {
             </Router>
             {
                 ctx.ActiveUsersStore.invitation &&
-                <Modal setShowModal={ctx.ActiveUsersStore.setInvitation} title="Приглашение">
+                <Modal setShowModal={ctx.ActiveUsersStore.reject} title="Приглашение">
                     <div className="card__header">
                         <h3 className="text text-white">Пользователь {ctx.ActiveUsersStore.invitation.from.login} приглошает вас</h3>
                     </div>
@@ -219,7 +167,6 @@ function App() {
                 ctx.ErrorStore?.error &&
                 <Modal setShowModal={ctx.ErrorStore.resetError} title="Ошибка">
                     <div className="card__header">
-                        {console.log(ctx.ErrorStore.error)}
                         <div className="text text-white">Ошибка: {ctx.ErrorStore.error.code}</div>
                     </div>
                     <div className="card__content">

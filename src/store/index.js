@@ -9,7 +9,6 @@ import initApi from "../utils/api";
 import {io} from "socket.io-client";
 import {reaction} from "mobx";
 import SessionStore from "./SessionStore";
-import {useNavigate} from "react-router-dom";
 import {createBrowserHistory} from "history";
 import ErrorStore from "./ErrorStore";
 
@@ -46,30 +45,26 @@ export class Store {
             try {
                 if(!attempt) {
                     attempt = true;
-                    console.log(attempt)
                     await this.AuthStore.refresh();
                     this.socket.auth.token = this.AuthStore?.accessToken;
                 } else {
-                    console.log(e)
                     this.socket.disconnect();
                 }
-            } catch (err) {
-                console.log(err)
+            } catch (error) {
+                console.log(error)
             }
         })
 
         reaction(() => this.AuthStore.accessToken, () => {
-                console.log('recconnect')
                 this.socket.disconnect();
                 this.socket.auth.token = this.AuthStore?.accessToken;
                 this.socket.connect();
             }
         );
+
         this.ErrorStore = new ErrorStore(this.socket);
         const api = initApi(this.AuthStore, this.ErrorStore);
-
         this.WorkoutStore = new WorkoutStore(api, this.AuthStore);
-
         this.ExerciseStore = new ExerciseStore(api);
         this.UserStore = new UserStore(api);
         this.SessionStore = new SessionStore(api, this.socket, this.RouterStore, this.AuthStore);

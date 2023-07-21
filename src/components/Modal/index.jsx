@@ -1,5 +1,5 @@
-import React from 'react';
-import classes from './style.module.css';
+import React from "react";
+import classes from "./style.module.css";
 
 const Modal = ({setShowModal, title, children}) => {
     return (
@@ -8,7 +8,7 @@ const Modal = ({setShowModal, title, children}) => {
         }}>
             <div className={classes.modal} onClick={e => e.stopPropagation()}>
                 <div className={classes.header}>
-                    <h3 className="subtitle text-white">{title}</h3>
+                    <h3 className='subtitle text-white'>{title}</h3>
                     <button className={classes.close} onClick={() => {
                         setShowModal(false)
                     }}></button>

@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import classes from './style.module.css';
+import React, {useState} from "react";
+import classes from "./style.module.css";
 
 
 const FileInput = ({oldFileUrl, setNewFile, error}) => {
@@ -14,8 +14,8 @@ const FileInput = ({oldFileUrl, setNewFile, error}) => {
     };
     return (
         <>
-            <input type="file" className={classes.input} id="file" onChange={handleFileChange}/>
-            <label htmlFor="file" className={classes.label}>Выбрать картинку</label>
+            <input type='file' className={classes.input} id='file' onChange={handleFileChange}/>
+            <label htmlFor='file' className={classes.label}>Выбрать картинку</label>
             {
                 file
                     ? <div className={classes['img-wrapper']}>

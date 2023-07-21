@@ -29,28 +29,24 @@ class AuthStore {
         }
     }
 
-    login = async ({login, password}) => {
+    login = async (login, password) => {
         const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/login`, {
             login,
             password
         }, {withCredentials: true});
         const accessToken = response.data.accessToken;
-        console.log(response)
         this.setAccessToken(accessToken);
     }
 
     register = async (user) => {
-        try {
-            const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/register`, user, {withCredentials: true});
-            const accessToken = await response.data.accessToken;
-            this.setAccessToken(accessToken);
-        } catch (e) {
-            console.log(e)
-        }
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/register`, user, {withCredentials: true});
+        const accessToken = await response.data.accessToken;
+        this.setAccessToken(accessToken);
     }
 
     logout = async () => {
         try {
+            await this.refresh();
             await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/logout`, null, {
                 headers: {
                     Authorization: `Bearer ${this.accessToken}`,
@@ -58,13 +54,12 @@ class AuthStore {
                 withCredentials: true,
             });
             this.setAccessToken(null);
-        } catch (e) {
+        } catch (error) {
             this.setAccessToken(null);
         }
     }
 
     refresh = async () => {
-        console.log('someone call refresh')
         const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/auth/refresh`, null, {withCredentials: true});
         const accessToken = await response.data.accessToken;
         this.setAccessToken(accessToken);
@@ -82,7 +77,7 @@ class AuthStore {
 
         try {
             return JSON.parse(window.atob(payload));
-        } catch (e) {
+        } catch (error) {
             return null
         }
     }
@@ -92,7 +87,7 @@ class AuthStore {
     }
 
     get isAdmin() {
-        return Number(this.user?.role_id) === 2;
+        return Number(this.user?.role_id) === Number(process.env.REACT_APP_ROLE_ADMIN);
     }
 }
 

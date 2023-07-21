@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import classes from "./style.module.css";
 import {ReactComponent as ArrowIcon} from "./arrow.svg";
 import {Link} from "react-router-dom";
@@ -32,18 +32,18 @@ const Pagination = ({onPageChange, totalCount, siblingCount = 1, currentPage = 1
         <div className={classes.pages}>
             {
                 paginationRange ? <>
-                        <Link to="#" onClick={onPrevious}
+                        <Link to='#' onClick={onPrevious}
                               className={`${classes.page__link} ${classes.page__prev}`}><ArrowIcon/></Link>
                         {paginationRange.map(page => {
                             if (page === DOTS) {
                                 return <div className={classes.page__link}>&#8230;</div>;
                             }
                             return (
-                                <Link to="#" onClick={() => onPageChange(page)}
+                                <Link to='#' onClick={() => onPageChange(page)}
                                       className={page === currentPage ? `${classes.page__link} ${classes.active}` : `${classes.page__link}`}>{page}</Link>
                             );
                         })}
-                        <Link to="#" onClick={onNext}
+                        <Link to='#' onClick={onNext}
                               className={`${classes.page__link} ${classes.page__next} ${classes.page__link__icon}`}><ArrowIcon/></Link>
                     </>
                     : null}

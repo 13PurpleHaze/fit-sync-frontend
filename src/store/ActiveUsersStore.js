@@ -4,17 +4,19 @@ class ActiveUsersStore {
     users = [];
     invitation = null;
     awaitTimeout = false;
+    AuthStore;
+    socket;
+
     constructor(socket, AuthStore) {
         this.socket = socket;
         this.AuthStore = AuthStore;
-        this.socket.on('active-users:get', (users) => {this.getActivePlayers(users)});
-        this.socket.on('active-users:invited', (data) => {this.invited(data)})
-        this.socket.on('active-users:rejected', data => this.rejected(data));
+        this.socket.on('active-users:get', users => this.getActiveUsers(users));
+        this.socket.on('active-users:invited', data => this.invited(data))
         makeObservable(this, {
             users: observable,
             invitation: observable,
             awaitTimeout: observable,
-            getActivePlayers: action,
+            getActiveUsers: action,
             invite: action,
             invited: action,
             accept: action,
@@ -22,24 +24,23 @@ class ActiveUsersStore {
         })
     }
 
-    getActivePlayers = (users) => {
+    getActiveUsers = (users) => {
         this.users = users;
     }
 
-    invite = (session, toSocketId) => {
-        this.socket.emit('active-users:invite', {session, from: this.AuthStore.user, toSocketId});
-
+    invite = (session, to) => {
+        this.socket.emit('active-users:invite', {session, from: this.AuthStore.user, to});
         this.awaitTimeout = true;
         this.awaitTimeout = setTimeout(
             () => {
                 this.awaitTimeout = false;
             },
-            15000
+            500
         );
     }
 
-    invited = ({session, from, toSocketId}) => {
-        this.invitation = {session, from, toSocketId};
+    invited = ({session, from, to}) => {
+        this.invitation = {session, from, to};
     }
 
     accept = () => {
@@ -50,7 +51,6 @@ class ActiveUsersStore {
     reject = () => {
         this.socket.emit('active-users:reject', this.invitation);
         this.invitation = null;
-        this.awaitTimeout = false;
     }
 }
 

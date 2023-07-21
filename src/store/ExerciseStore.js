@@ -1,6 +1,5 @@
 import {action, makeObservable, observable} from "mobx";
 
-
 class ExerciseStore {
     exercises = [];
     totalCount = 0;
@@ -11,6 +10,7 @@ class ExerciseStore {
         makeObservable(this,
             {
                 exercises: observable,
+                totalCount: observable,
                 fetch: action,
                 add: action,
                 update: action,
@@ -26,8 +26,8 @@ class ExerciseStore {
                 sort
             }
         });
-        this.totalCount = response.headers['x-total-count'];
-        this.exercises = response.data;
+        this.totalCount = response?.headers['x-total-count'];
+        this.exercises = response?.data;
     }
 
     find = async (id) => {

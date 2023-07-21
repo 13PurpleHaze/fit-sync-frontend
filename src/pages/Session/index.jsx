@@ -1,5 +1,5 @@
-import React, {useContext, useEffect, useState} from 'react';
-import classes from './style.module.css'
+import React, {useContext, useEffect, useState} from "react";
+import classes from "./style.module.css"
 import PrimaryBtn from "../../components/PrimaryBtn";
 import ExsResultInput from "../../components/ExsResultInput";
 import TextArea from "../../components/TextArea";
@@ -33,13 +33,13 @@ const Session = () => {
             <div className={classes['workout-wrapper']}>
                 <div className={classes['workout-main']}>
                     <div className={classes.workout}>
-                        <h3 className="title">{ctx.SessionStore?.session?.workout?.title}</h3>
-                        <form method="post" className={classes.workout__content}>
+                        <h3 className='title'>{ctx.SessionStore?.session?.workout?.title}</h3>
+                        <form method='post' className={classes.workout__content}>
                             <div className={classes.exercises}>
                                 {ctx.SessionStore?.session?.workout?.exercises.map(exercise =>
                                     <div className={classes.exercise} key={exercise.exercise_id}>
                                         <img className={classes.exercise__img}
-                                             src={exercise.img} alt=""/>
+                                             src={exercise.img} alt=''/>
                                         <label
                                             className={classes.exercise__text}>{exercise.title} {exercise.reps} {exercise.is_static ? 'с.' : 'р.'}</label>
                                         <ExsResultInput
@@ -61,7 +61,7 @@ const Session = () => {
                         </form>
                     </div>
                     <div className={classes.players}>
-                        <h3 className="title">Команда</h3>
+                        <h3 className='title'>Команда</h3>
                         <div className={classes.players__list}>
                             <div className={classes.player}>
                                 <div className={classes.player__name}>Добавить нового (до 5 чел.)</div>
@@ -96,7 +96,7 @@ const Session = () => {
                 </div>
                 <div className={classes.chat}>
                     <div className={showChat ? `${classes.chat__header} ${classes.active}` : `${classes.chat__header}`}>
-                        <h3 className="text text-white">Chat</h3>
+                        <h3 className='text text-white'>Chat</h3>
                         <div className={classes.chat__minimize} onClick={() => {
                             setShowChat(!showChat)
                         }}></div>
@@ -129,17 +129,17 @@ const Session = () => {
             </div>
             {
                 showModal &&
-                <Modal setShowModal={setShowModal} title="Пригласить пользователя">
+                <Modal setShowModal={setShowModal} title='Пригласить пользователя'>
                     {!ctx.ActiveUsersStore.invitation &&
                         <div className={classes['active-players']}>
                             {
                                 !ctx.ActiveUsersStore.users.length ?
-                                    <div className="text text-white">Нет активных пользователей</div> :
+                                    <div className='text text-white'>Нет активных пользователей</div> :
                                     ctx.ActiveUsersStore.users.map(user =>
                                         <div className={classes['active-player']} key={user.userId}>
-                                            <div className="text text-white">{user.login}</div>
+                                            <div className='text text-white'>{user.login}</div>
                                             <PrimaryBtn onClick={() => {
-                                                ctx.ActiveUsersStore.invite(ctx.SessionStore.session, user.socketId)
+                                                ctx.ActiveUsersStore.invite(ctx.SessionStore.session, user)
                                                 setShowModal(false);
                                             }}>Пригласить</PrimaryBtn>
                                         </div>
@@ -154,7 +154,7 @@ const Session = () => {
                 ctx.ActiveUsersStore?.awaitTimeout &&
                 <div className={classes['modal-wrapper']}>
                     <div className={classes.modal}>
-                        <img src={LoaderIcon} alt="" className={classes.loader}/>
+                        <img src={LoaderIcon} alt='' className={classes.loader}/>
                     </div>
                 </div>
             }

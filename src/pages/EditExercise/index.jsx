@@ -1,11 +1,11 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from "react";
 import Input from "../../components/Input";
-import ExsTypeSelect from "../../components/ExsTypeSelect";
 import FileInput from "../../components/FileInput";
 import PrimaryBtn from "../../components/PrimaryBtn";
 import {StoreContext} from "../../store";
 import {useNavigate, useParams} from "react-router-dom";
 import {useForm, Controller} from "react-hook-form";
+import Select from "../../components/Select";
 
 const EditExercises = () => {
     const ctx = useContext(StoreContext);
@@ -24,7 +24,7 @@ const EditExercises = () => {
         handleSubmit,
         formState: {isValid, isDirty},
     } = useForm({
-        mode: "onChange",
+        mode: 'onChange',
         defaultValues: {
             is_static: exercise?.is_static,
             title: exercise?.title,
@@ -44,17 +44,17 @@ const EditExercises = () => {
     }
 
     return (
-        <div className="card">
-            <div className="card__header">
-                <h3 className="title text-white">Упражнение #{exercise?.exercise_id}</h3>
+        <div className='card'>
+            <div className='card__header'>
+                <h3 className='title text-white'>Упражнение #{exercise?.exercise_id}</h3>
             </div>
             {
                 exercise
                     ?
-                    <form method="post" onSubmit={handleSubmit(submit)} className="card__content">
+                    <form method='post' onSubmit={handleSubmit(submit)} className='card__content'>
                         <div>
                             <Controller
-                                name="title"
+                                name='title'
                                 control={control}
                                 defaultValue={exercise.title}
                                 rules={{
@@ -65,29 +65,33 @@ const EditExercises = () => {
                                             'Только символы кириллицы, латиницы и нижнее подчеркивание разрешены',
                                     },
                                 }}
-                                render={({field, fieldState}) => (
+                                render={({field: {ref, ...rest}, fieldState}) => (
                                     <Input
-                                        {...field}
+                                        {...rest}
                                         error={fieldState.error?.message}
-                                        placeholder="Название"
+                                        placeholder='Название'
                                     />
                                 )}
                             />
                         </div>
                         <div>
                             <Controller
-                                name="is_static"
+                                name='is_static'
                                 control={control}
                                 defaultValue={exercise.is_static}
-                                render={({field}) => (
-                                    <ExsTypeSelect {...field}/>
+                                render={({field: {ref, ...rest}}) => (
+                                    <Select {...rest} multiple={false}>
+                                        <option value={true} className='text-black'>Статическое</option>
+                                        <option value={false} className='text-black'>Динамическое</option>
+                                    </Select>
                                 )}
                             />
                         </div>
                         <div>
                             <Controller
-                                name="img"
+                                name='img'
                                 control={control}
+                                defaultValue=''
                                 rules={{
                                     validate: {
                                         fileSize: (value) =>
@@ -103,12 +107,12 @@ const EditExercises = () => {
                                         },
                                     },
                                 }}
-                                render={({field, fieldState}) => (
+                                render={({field: {ref, ...rest}, fieldState}) => (
                                     <FileInput
-                                        {...field}
+                                        {...rest}
                                         error={fieldState.error}
                                         oldFileUrl={exercise.img}
-                                        setNewFile={field.onChange}
+                                        setNewFile={rest.onChange}
                                     />
                                 )}
                             />

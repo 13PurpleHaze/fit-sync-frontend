@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from "react";
 import {StoreContext} from "../../store";
 import {useNavigate} from "react-router-dom";
 import {Controller, useForm} from "react-hook-form";
@@ -12,17 +12,15 @@ const CreateSecondStep = () => {
 
     useEffect(() => {
         if(!ctx.WorkoutStore?.workout?.exercises) {
-            navigate("/");
+            navigate('/');
         }
         const fetch = async () => {
             const exercises = await Promise.all(
                 ctx.WorkoutStore?.workout?.exercises.map(async exerciseId => {
-                    console.log(exerciseId);
                     return await (await ctx.ExerciseStore.find(exerciseId)).data
                 })
             )
             setExercises(exercises);
-            console.log(exercises)
         }
         if(ctx.WorkoutStore?.workout) {
             fetch();
@@ -35,39 +33,40 @@ const CreateSecondStep = () => {
         reset,
         formState: {isValid, isDirty}
     } = useForm({
-        mode: "onChange",
+        mode: 'onChange',
     })
 
     const submit = async (data) => {
         ctx.WorkoutStore.addWorkout({...ctx.WorkoutStore.workout, exercises: data});
         await ctx.WorkoutStore.add(ctx.WorkoutStore.workout);
         reset();
-        navigate("/workout");
+        navigate('/workout');
     }
 
     return (
-        <div className="card">
-            <div className="card__header">
-                <h3 className="title text-white">Создать тренировку</h3>
+        <div className='card'>
+            <div className='card__header'>
+                <h3 className='title text-white'>Создать тренировку</h3>
             </div>
-            <form method="post" onSubmit={handleSubmit(submit)} className="card__content">
+            <form method='post' onSubmit={handleSubmit(submit)} className='card__content'>
                 {exercises.length && exercises.map(exercise =>
-                    <div>
-                        <label className="text text-white">{exercise.title}</label>
+                    <div key={exercise.exercise_id}>
+                        <label className='text text-white'>{exercise.title}</label>
                         <Controller
                             name={exercise.exercise_id}
                             control={control}
-                            render={({field, fieldState}) => (
+                            defaultValue=''
+                            render={({field: {ref, ...rest}, fieldState}) => (
                                 <Input
                                     error={fieldState.error?.message}
-                                    {...field}
-                                    placeholder={exercise.is_static ? 'Количество секунд' : "Количество повторений"}
+                                    {...rest}
+                                    placeholder={exercise.is_static ? 'Количество секунд' : 'Количество повторений'}
                                 />
                             )}
                         />
                     </div>
                 )}
-                <PrimaryBtn colorState={false} disabled={!isValid || !isDirty}>Создать</PrimaryBtn>
+                <PrimaryBtn isRed={false} disabled={!isValid || !isDirty}>Создать</PrimaryBtn>
             </form>
         </div>
     );

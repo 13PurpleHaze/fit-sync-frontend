@@ -1,4 +1,4 @@
-import {action, makeObservable, observable, observe, toJS} from 'mobx';
+import {action, makeObservable, observable, observe, toJS} from "mobx";
 
 class RouterStore {
     location = null;

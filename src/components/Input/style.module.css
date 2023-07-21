@@ -13,8 +13,8 @@
 }
 
 .input[aria-invalid="true"] {
-    color: red;
-    border-bottom-color: red;
+    color: #222;
+    border-bottom-color: #222;
     margin-bottom: 5px;
 }
 
@@ -23,7 +23,8 @@
 }
 
 .error {
-    color: red;
+    color: #222;
+    font-weight: 400;
     font-family: 'Roboto Slab', 'serif';
     font-size: 16px;
 }

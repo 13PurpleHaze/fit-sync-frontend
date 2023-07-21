@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from 'react';
+import React, {useContext, useEffect} from "react";
 import {Controller, useForm} from "react-hook-form";
 import Input from "../../components/Input";
 import Select from "../../components/Select";
@@ -21,7 +21,7 @@ const CreateWorkout = () => {
         reset,
         formState: {isValid, isDirty}
     } = useForm({
-        mode: "onChange",
+        mode: 'onChange',
     })
 
     const submit = (data) => {
@@ -31,15 +31,16 @@ const CreateWorkout = () => {
     }
 
     return (
-        <div className="card">
-            <div className="card__header">
-                <h3 className="title text-white">Создать тренировку</h3>
+        <div className='card'>
+            <div className='card__header'>
+                <h3 className='title text-white'>Создать тренировку</h3>
             </div>
-            <form method="post" onSubmit={handleSubmit(submit)} className="card__content">
+            <form method='post' onSubmit={handleSubmit(submit)} className='card__content'>
                 <div>
                     <Controller
-                        name="title"
+                        name='title'
                         control={control}
+                        defaultValue=''
                         rules={{
                             required: 'Это поле обязательно',
                             validate: {
@@ -48,21 +49,22 @@ const CreateWorkout = () => {
                                     'Только символы кириллицы, латиницы, цифры и нижнее подчеркивание разрешены',
                             },
                         }}
-                        render={({field, fieldState}) => (
+                        render={({field: {ref, ...rest}, fieldState}) => (
                             <Input
-                                {...field}
+                                {...rest}
                                 error={fieldState.error?.message}
-                                placeholder="Название"
+                                placeholder='Название'
                             />
                         )}
                     />
                 </div>
-                {ctx.ExerciseStore?.exercises
-                    ? <div>
-                        <div className="text text-white">Выбирите упражение(я)</div>
+                {ctx.ExerciseStore?.exercises &&
+                     <div>
+                        <div className='text text-white'>Выбирите упражение(я)</div>
                         <Controller
-                            name="exercises"
+                            name='exercises'
                             control={control}
+                            defaultValue=''
                             rules={{
                                 required: 'Это поле обязательно',
                                 validate: {
@@ -70,22 +72,21 @@ const CreateWorkout = () => {
                                         (value.length <= 5) || 'Можно выбрать только 5 упражнений'
                                 }
                             }}
-                            render={({field, fieldState}) => (
+                            render={({field: {ref, ...rest}, fieldState}) => (
                                 <Select
-                                    {...field}
+                                    {...rest}
                                     error={fieldState.error?.message}
                                     multiple={true}
                                 >
                                     {ctx.ExerciseStore.exercises.map(exercise =>
-                                        <option value={exercise.exercise_id}>{exercise.title}</option>
+                                        <option value={exercise.exercise_id} className='text-white' key={exercise.exercise_id}>{exercise.title}</option>
                                     )}
                                 </Select>
                             )}
                         />
                     </div>
-                    : null
                 }
-                <PrimaryBtn colorState={false} disabled={!isValid || !isDirty}>Далее</PrimaryBtn>
+                <PrimaryBtn isRed={false} disabled={!isValid || !isDirty}>Далее</PrimaryBtn>
             </form>
         </div>
     );

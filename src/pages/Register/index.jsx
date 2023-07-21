@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext} from "react";
 import classes from "./style.module.css";
 import {ReactComponent as LogoIcon} from "./logo.svg";
 import Input from "../../components/Input";
@@ -16,7 +16,7 @@ const Register = () => {
         handleSubmit,
         formState: {isValid, isDirty}
     } = useForm({
-        mode: "onChange",
+        mode: 'onChange',
     })
 
     const submit = async (data) => {
@@ -34,11 +34,12 @@ const Register = () => {
                 <div className={classes.logo}>
                     <LogoIcon/>
                 </div>
-                <h3 className="title text-white">Регистрация</h3>
+                <h3 className='title text-white text-center'>Регистрация</h3>
                 <div>
                     <Controller
-                        name="first_name"
+                        name='first_name'
                         control={control}
+                        defaultValue=''
                         rules={{
                             required: 'Это поле обязательно',
                             validate: {
@@ -47,19 +48,20 @@ const Register = () => {
                                     'Только символы кириллицы, латиницы и нижнее подчеркивание разрешены',
                             },
                         }}
-                        render={({field, fieldState}) => (
+                        render={({field: {ref, ...rest}, fieldState}) => (
                             <Input
-                                {...field}
+                                {...rest}
                                 error={fieldState.error?.message}
-                                placeholder="Имя"
+                                placeholder='Имя'
                             />
                         )}
                     />
                 </div>
                 <div>
                     <Controller
-                        name="sur_name"
+                        name='sur_name'
                         control={control}
+                        defaultValue=''
                         rules={{
                             required: 'Это поле обязательно',
                             validate: {
@@ -68,19 +70,20 @@ const Register = () => {
                                     'Только символы кириллицы, латиницы и нижнее подчеркивание разрешены',
                             },
                         }}
-                        render={({field, fieldState}) => (
+                        render={({field: {ref, ...rest}, fieldState}) => (
                             <Input
-                                {...field}
+                                {...rest}
                                 error={fieldState.error?.message}
-                                placeholder="Фамилия"
+                                placeholder='Фамилия'
                             />
                         )}
                     />
                 </div>
                 <div className={classes['form-group']}>
                     <Controller
-                        name="age"
+                        name='age'
                         control={control}
+                        defaultValue=''
                         rules={{
                             required: 'Это поле обязательно',
                             validate: {
@@ -93,18 +96,19 @@ const Register = () => {
                             <Input
                                 {...field}
                                 error={fieldState.error?.message}
-                                placeholder="Возраст"
+                                placeholder='Возраст'
                             />
                         )}/>
                     <Controller
-                        name="gender"
+                        name='gender'
                         control={control}
+                        defaultValue=''
                         rules={{
                             required: 'Это поле обязательно',
                         }}
-                        render={({field, fieldState}) => (
+                        render={({field: {ref, ...rest}, fieldState}) => (
                             <GenderSelect
-                                {...field}
+                                {...rest}
                                 error={fieldState.error?.message}
                             />
                         )}
@@ -112,8 +116,9 @@ const Register = () => {
                 </div>
                 <div>
                     <Controller
-                        name="login"
+                        name='login'
                         control={control}
+                        defaultValue=''
                         rules={{
                             required: 'Это поле обязательно',
                             validate: {
@@ -122,33 +127,34 @@ const Register = () => {
                                     'Только символы кириллицы, латиницы, цифры и нижнее подчеркивание разрешены',
                             },
                         }}
-                        render={({field, fieldState}) => (
+                        render={({field: {ref, ...rest}, fieldState}) => (
                             <Input
-                                {...field}
+                                {...rest}
                                 error={fieldState.error?.message}
-                                placeholder="Логин"
+                                placeholder='Логин'
                             />
                         )}
                     />
                 </div>
                 <div>
                     <Controller
-                        name="password"
+                        name='password'
                         control={control}
+                        defaultValue=''
                         rules={{
                             required: 'Это поле обязательно',
                         }}
-                        render={({field, fieldState}) => (
+                        render={({field: {ref, ...rest}, fieldState}) => (
                             <Input
-                                placeholder="Пароль"
-                                type="password"
-                                {...field}
+                                placeholder='Пароль'
+                                type='password'
+                                {...rest}
                                 error={fieldState.error?.message}
                             />
                         )}
                     />
                 </div>
-                <div className="text text-white text-center">Уже есть аккаунт? <div><Link to="/login" className="text text-white">Войти</Link></div></div>
+                <div className='text text-white text-center'>Уже есть аккаунт? <div><Link to="/login" className='text text-white'>Войти</Link></div></div>
                 <PrimaryBtn disabled={!isValid || !isDirty}>Зарегистрироваться</PrimaryBtn>
             </form>
         </div>
